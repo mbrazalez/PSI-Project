@@ -4,6 +4,7 @@
   "description": "Project for the Software Engineering Processes subject",
   "main": "index.js",
   "scripts": {
+    "start": "node index.js",
     "testW": "node_modules\\.bin\\jasmine-node servidor",
     "test": "./node_modules/.bin/jasmine-node servidor"
   },
