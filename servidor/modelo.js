@@ -8,6 +8,7 @@ function Sistema(){
         }else{
             this.usuarios[nick]=new Usuario(nick);
             res.nick=nick;
+            console.log("Usuario "+nick+" ha sido registrado");
         }
         return res;
     }
