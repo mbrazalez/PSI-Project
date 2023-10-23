@@ -1,5 +1,13 @@
+
 function Sistema(){
+    const datos = require('./cad.js');
     this.usuarios={};
+    this.cad = new datos.CAD();
+
+    this.cad.conectar(function(db){
+        console.log("Conectado a la base de datos");
+    });
+
     this.agregarUsuario=function(nick){
         let res = {nick:-1}
         console.log("Agregando usuario "+nick);
@@ -12,6 +20,7 @@ function Sistema(){
         }
         return res;
     }
+
     this.obtenerUsuarios=function(){
         let list = Object.keys(this.usuarios);
         if (list.length==0)
@@ -43,10 +52,18 @@ function Sistema(){
         let list = Object.keys(this.usuarios);
         return {num: list.length};
     }
+
+    this.buscarOCrearUsuario=function(email,callback){
+        this.cad.buscarOCrearUsuario(email,function(obj){
+            callback(obj);
+        });
+    }
 }
 
 function Usuario(nick){
     this.nick=nick;
+    this.email;
+    this.clave;
 }
 
 module.exports.Sistema=Sistema;

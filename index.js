@@ -1,15 +1,50 @@
 const fs=require("fs");
 const express = require('express');
 const app = express();
+const passport = require('passport');
+const cookieSession = require('cookie-session');
+require('./servidor/passport-setup.js');
 const modelo = require("./servidor/modelo.js");
-
 const PORT = process.env.PORT || 3000;
 
 app.use(express.static(__dirname + "/"));
+app.use(cookieSession({
+    name: 'Sistema',
+    keys:['key1','key2']
+}));
+app.use(passport.initialize());
+app.use(passport.session());
+app.get("/auth/google",passport.authenticate('google', { scope: ['profile','email'] }));
+
 let sistema = new modelo.Sistema();
+
+
+app.get('/google/callback',
+    passport.authenticate('google', { failureRedirect: '/fallo' }),
+    function(req, res) {
+    res.redirect('/good');
+});
+
+app.get('/good', function(request, response){
+    let email = request.user.emails[0].value;
+    sistema.buscarOCrearUsuario(email,function(obj){
+        response.cookie("nick", obj.email);
+        response.redirect('/');
+    });
+});
+
+app.get('/fallo', function(request, response){
+    response.send("Fallo en la autenticación");
+});
 
 app.get("/", function(request,response){
     var contenido=fs.readFileSync(__dirname+"/cliente/index.html");
+    response.setHeader("Content-type","text/html");
+    response.send(contenido);
+});
+
+app.get("/", function(request,response){
+    var contenido=fs.readFileSync(__dirname+"/cliente/eliminarUsuario.html");
     response.setHeader("Content-type","text/html");
     response.send(contenido);
 });
