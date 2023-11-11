@@ -1,3 +1,6 @@
+const datos = require("./cad.js");
+const correo = require("./email.js");
+const bcrypt = require("bcrypt");
 
 function Sistema(){
     const datos = require('./cad.js');
@@ -39,13 +42,16 @@ function Sistema(){
     }
     
     this.eliminarUsuario=function(nick){
-        if (this.usuarios[nick.toString()]){
-            delete this.usuarios[nick];
-            return {nick:nick};
-        }else{
-            console.log("El usuario no existe");
-            return {nick:-1};
+        let res={"usuario_eliminado":-1};
+        if (this.usuarios[nick]){
+            delete(this.usuarios[nick]);
+            console.log("Se ha eliminado el usuario con nick " + nick);
+            res.usuario_eliminado = nick;
         }
+        else {
+            console.log("No existe un usuario con nick " + nick);
+        }
+        return res;
     }
 
     this.numeroUsuarios=function(){
@@ -53,11 +59,92 @@ function Sistema(){
         return {num: list.length};
     }
 
-    this.buscarOCrearUsuario=function(email,callback){
-        this.cad.buscarOCrearUsuario(email,function(obj){
-            callback(obj);
+    this.registrarUsuario=function(obj,callback){
+        let modelo=this;
+        if (!obj.nick){
+            obj.nick=obj.email;
+        }
+        this.cad.buscarUsuario({"email":obj.email},function(usr){
+            if (!usr){
+                //el usuario no existe, luego lo puedo registrar
+                obj.key=Date.now().toString();
+                obj.confirmada=false; 
+                bcrypt.hash(obj.password, 10, function (err, hash) {
+                    obj.password = hash;
+                    modelo.cad.insertarUsuario(obj,function(res){
+                        callback(res);
+                    });
+                });
+                console.log/({obj});
+                correo.enviarEmail(obj.email,obj.key,"Confirmar cuenta");
+            }
+            else
+            {
+                callback({"email":-1});
+            }
         });
     }
+
+    this.loginUsuario = function (obj, callback) {
+        this.cad.buscarUsuario(
+          { email: obj.email, confirmada: true },
+          function (usr) {
+            if (!usr) {
+              callback({ email: -1 });
+              return -1;
+            } else {
+              bcrypt.compare(obj.password, usr.password, function (err, result) {
+                if (err) {
+                  console.error("Error al comparar contraseñas:", err);
+                  callback({
+                    email: -1,
+                    mensaje: "Error al comparar contraseñas",
+                  });
+                } else if (result) {
+                  callback(usr); // Contraseña válida
+                } else {
+                  callback({ email: -1, mensaje: "Contraseña incorrecta" }); // Contraseña incorrecta
+                }
+              });
+            }
+          }
+        );
+      };
+        
+    this.usuarioGoogle=function(usr,callback){
+        this.cad.buscarOCrearUsuario(usr,function(obj){
+            callback(obj);
+        });
+    };
+
+    this.confirmarUsuario=function(obj,callback){
+        let modelo=this;
+        this.cad.buscarUsuario({email:obj.email,confirmada:false,key:obj.key},function(usr){
+            if (usr){
+                usr.confirmada=true;
+                modelo.cad.actualizarUsuario(usr,function(res){
+                    callback({"email":res.email}); //callback(res)
+                })
+            }
+            else
+            {
+                callback({"email":-1});
+            }
+        })
+    };
+
+    this.usuarioOAuth = function (usr, callback) {
+        let copia = usr;
+        usr.confirmada = true;
+        this.cad.buscarOCrearUsuario(usr, function (obj) {
+          if (obj.email == null) {
+            console.log("El usuario " + usr.email + " ya estaba registrado");
+            obj.email = copia;
+          }
+          callback(obj);
+        });
+    };
+
 }
 
 function Usuario(nick){
