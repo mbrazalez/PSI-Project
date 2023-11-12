@@ -1,5 +1,4 @@
 const fs=require("fs");
-const bcrypt = require("bcrypt");
 const express = require('express');
 const app = express();
 const LocalStrategy = require('passport-local').Strategy;
@@ -49,34 +48,33 @@ app.get('/github/callback',
 
 app.get("/good", function (req, res) {
     switch (req.user.provider) {
-      case "google":
-        let email = req.user.emails[0].value;
-        sistema.usuarioOAuth({ email: email }, function (obj) {
-          res.cookie("nick", obj.email);
-          res.redirect("/");
-        });
-        break;
-      case "github":
-        console.log(req.user);
-        let email2 = req.user.username;
-        sistema.usuarioOAuth({ email: email2 }, function (obj) {
-          res.cookie("nick", obj.email);
-          res.redirect("/");
-        });
-        break;
-      default:
-        res.redirect("/");
-        break;
+        case "google":
+            let email = req.user.emails[0].value;
+            sistema.usuarioOAuth({ email: email }, function (obj) {
+            res.cookie("nick", obj.email);
+            res.redirect("/");
+            });
+            break;
+        case "github":
+            console.log(req.user);
+            let email2 = req.user.username;
+            sistema.usuarioOAuth({ email: email2 }, function (obj) {
+            res.cookie("nick", obj.email);
+            res.redirect("/");
+            });
+            break;
+        case "google-one-tap":
+            let email3 = req.user.email;
+            sistema.usuarioOAuth({ email: email3 }, function (obj) {
+            res.cookie("nick", obj.email);
+            res.redirect("/");
+            });
+            break;
+        default:
+            res.redirect("/");
+            break;
     }
   });
-
-app.get("/good", function(request,response){
-    let email=request.user.emails[0].value;
-    sistema.usuarioGoogle({'email':email}, function(obj){
-        response.cookie("nick",obj.email);
-        response.redirect("/");
-    });
-});
 
 app.get('/fallo', function(request, response){
     response.send("Fallo en la autenticación");
@@ -166,7 +164,6 @@ app.get("/cerrarSesion",haIniciado,function(request,response){
 app.post('/oneTap/callback',
     passport.authenticate('google-one-tap', { failureRedirect: '/fallo' }),
     function(req, res) {
-    // Successful authentication, redirect home.
         res.redirect('/good');
 });
 
