@@ -21,7 +21,7 @@ passport.use(new GoogleStrategy(
         callbackURL: "https://procesos-bnruumvxca-ew.a.run.app/google/callback"
     },
 
-    function(accessToken, refreshToken, profile, done) {
+    function(profile, done) {
         return done(null, profile);
     }
 ));
@@ -33,7 +33,7 @@ passport.use(new GoogleOneTapStrategy(
         verifyCsrfToken: false
     },
 
-    function(accessToken, refreshToken, profile, done) {
+    function(profile, done) {
         return done(null, profile);
     }
 ));
