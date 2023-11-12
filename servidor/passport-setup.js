@@ -40,7 +40,7 @@ passport.use(new GoogleOneTapStrategy(
 
 passport.use(new GitHubStrategy({
     // preprod
-    // clientID: "5a334ef49a216b2b9d06",
+    // clientID: ${{ secrets.GH_CLIENT_ID }},
     // clientSecret: "f4900d7c820410d215125e901dcda923ff51a254",
     // callbackURL: "http://localhost:3000/github/callback"
     // prod
