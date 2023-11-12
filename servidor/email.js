@@ -1,5 +1,5 @@
 const nodemailer = require('nodemailer');
-const url="http://localhost:3000/";
+const url="https://procesos-bnruumvxca-ew.a.run.app/";
 //const url="http://localhost:3000/";
 
 

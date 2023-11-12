@@ -29,7 +29,6 @@ app.use(passport.initialize());
 app.use(passport.session());
 app.get("/auth/google",passport.authenticate('google', { scope: ['profile','email'] }));
 app.get("/auth/github",passport.authenticate('github', { scope: ["user:email"] }));
-app.get("/auth/google/onetap",passport.authenticate('google-one-tap', { callbackURL: "/oneTap/callback" }));
 
 let sistema = new modelo.Sistema();
 
@@ -50,32 +49,33 @@ app.get('/github/callback',
 
 app.get("/good", function (req, res) {
     switch (req.user.provider) {
-        case "google":
-            let email = req.user.emails[0].value;
-            sistema.usuarioOAuth({ email: email }, function (obj) {
-                res.cookie("nick", obj.email);
-                res.redirect("/");
-            });
-            break;
-        case "github":
-            console.log(req.user);
-            let email2 = req.user.username;
-            sistema.usuarioOAuth({ email: email2 }, function (obj) {
-                res.cookie("nick", obj.email);
-                res.redirect("/");
-            });
-            break;
-        case "google-one-tap":
-            let email3 = req.user.emails[0].value;
-            sistema.usuarioOAuth({ email: email3 }, function (obj) {
-                res.cookie("nick", obj.email);
-                res.redirect("/");
-            });
-            break;
-        default:
-            res.redirect("/");
-            break;
+      case "google":
+        let email = req.user.emails[0].value;
+        sistema.usuarioOAuth({ email: email }, function (obj) {
+          res.cookie("nick", obj.email);
+          res.redirect("/");
+        });
+        break;
+      case "github":
+        console.log(req.user);
+        let email2 = req.user.username;
+        sistema.usuarioOAuth({ email: email2 }, function (obj) {
+          res.cookie("nick", obj.email);
+          res.redirect("/");
+        });
+        break;
+      default:
+        res.redirect("/");
+        break;
     }
+  });
+
+app.get("/good", function(request,response){
+    let email=request.user.emails[0].value;
+    sistema.usuarioGoogle({'email':email}, function(obj){
+        response.cookie("nick",obj.email);
+        response.redirect("/");
+    });
 });
 
 app.get('/fallo', function(request, response){
