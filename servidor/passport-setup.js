@@ -44,7 +44,7 @@ passport.use(new GitHubStrategy({
     // clientSecret: "f4900d7c820410d215125e901dcda923ff51a254",
     // callbackURL: "http://localhost:3000/github/callback"
     // prod
-    clientID: "feb6f616a9921fb9667d",
+    clientID: ${{ secrets.GH_CLIENT_ID }},
     clientSecret: "6b69b0b38f6945ff6ae463066b57da21c3dafeaf",
     callbackURL: "https://procesos-bnruumvxca-ew.a.run.app/github/callback"
 },
