@@ -79,13 +79,20 @@ const modelo = require('./modelo.js');
     })
 
 
-
     it("Inicio de sesión correcto", function (done) {
       sistema.loginUsuario(usrTest, function(res){
         expect(res.email).toNotEqual(-1);
         expect(res.email).toEqual(usrTest.email);
         done();
       });
+    });
+
+      it("Inicio de sesión incorrecto", function (done) {
+        let usrTest2 = { email: "test2@test.es", password: "test", nick: "test" };
+        sistema.loginUsuario(usrTest2, function(res){
+          expect(res.email).toEqual(-1);
+          done();
+        });
     });
   });
 });
