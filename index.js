@@ -51,7 +51,7 @@ app.get("/good", function (req, res) {
         case "google":
             let email = req.user.emails[0].value;
             sistema.usuarioOAuth({ email: email }, function (obj) {
-            res.cookie("nick", obj.email);
+            res.cookie("email", obj.email);
             res.redirect("/");
             });
             break;
@@ -59,14 +59,14 @@ app.get("/good", function (req, res) {
             console.log(req.user);
             let email2 = req.user.username;
             sistema.usuarioOAuth({ email: email2 }, function (obj) {
-            res.cookie("nick", obj.email);
+            res.cookie("email", obj.email);
             res.redirect("/");
             });
             break;
         case "google-one-tap":
             let email3 = req.user.email;
             sistema.usuarioOAuth({ email: email3 }, function (obj) {
-            res.cookie("nick", obj.email);
+            res.cookie("email", obj.email);
             res.redirect("/");
             });
             break;
@@ -92,9 +92,9 @@ app.get("/", function(request,response){
     response.send(contenido);
 });
 
-app.get("/agregarUsuario/:nick", haIniciado, function(request,response){
-    let nick=request.params.nick;
-    let res=sistema.agregarUsuario(nick);
+app.get("/agregarUsuario/:email", haIniciado, function(request,response){
+    let email=request.params.email;
+    let res=sistema.agregarUsuario(email);
     response.send(res);
 });
 
@@ -103,15 +103,15 @@ app.get("/obtenerUsuarios", haIniciado, function(request,response){
     response.send(res);
 });
 
-app.get("/eliminarUsuario/:nick", haIniciado, function(request,response){
-    let nick=request.params.nick;
-    let res=sistema.eliminarUsuario(nick);
+app.get("/eliminarUsuario/:email", haIniciado, function(request,response){
+    let email=request.params.email;
+    let res=sistema.eliminarUsuario(email);
     response.send(res);
 });
 
-app.get("/usuarioActivo/:nick", haIniciado, function(request,response){
-    let nick = request.params.nick;
-    let res = sistema.usuarioActivo(nick);
+app.get("/usuarioActivo/:email", haIniciado, function(request,response){
+    let email = request.params.email;
+    let res = sistema.usuarioActivo(email);
     response.send(res);
 });
 
@@ -125,20 +125,20 @@ app.post('/enviarJwt', function (request, response) {
     let user = JSON.parse(atob(jwt.split(".")[1]));
     let email = user.email;
     sistema.usuarioGoogle({'email':email}, function(usr){
-        response.send({'nick':usr.email});
+        response.send({'email':usr.email});
     });
 });
 
 app.post('/registrarUsuario', function (request, response) {
     sistema.registrarUsuario(request.body, function(res){
-        response.send({'nick': res.email});
+        response.send({'email': res.email});
     });
 });
 
 app.post('/loginUsuario',passport.authenticate("local",{failureRedirect:"/fallo",successRedirect: "/ok"}));
 
 app.get("/ok",function(request,response){
-    response.send({nick:request.user.email})
+    response.send({email:request.user.email})
 });
 
 app.get("/confirmarUsuario/:email/:key",function(request,response){
@@ -146,18 +146,18 @@ app.get("/confirmarUsuario/:email/:key",function(request,response){
     let key=request.params.key;
     sistema.confirmarUsuario({"email":email,"key":key},function(usr){
         if (usr.email!=-1){
-            response.cookie('nick',usr.email);
+            response.cookie('email',usr.email);
         }
         response.redirect('/');
     });
 });
 
 app.get("/cerrarSesion",haIniciado,function(request,response){
-    let nick=request.user.nick;
+    let email=request.user.email;
     request.logout();
     response.redirect("/");
-    if (nick){
-        sistema.eliminarUsuario(nick);
+    if (email){
+        sistema.eliminarUsuario(email);
     }
 });
 

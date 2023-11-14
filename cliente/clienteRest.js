@@ -5,13 +5,13 @@ function ClienteRest() {
         url:'/enviarJwt',
         data: JSON.stringify({"jwt":jwt}),
       success:function(data){
-        let msg="El nick "+data.nick+" está ocupado";
-        if (data.nick!=-1){
-          console.log("Usuario "+data.nick+" ha sido registrado");
-          msg="Bienvenido al sistema, "+data.nick;
-          $.cookie("nick",data.nick);
+        let msg="El email "+data.email+" está ocupado";
+        if (data.email!=-1){
+          console.log("Usuario "+data.email+" ha sido registrado");
+          msg="Bienvenido al sistema, "+data.email;
+          $.cookie("email",data.email);
         }else{
-          console.log("El nick ya está ocupado");
+          console.log("El email ya está ocupado");
         }
         cw.limpiar();
         cw.mostrarMsg(msg);
@@ -26,32 +26,32 @@ function ClienteRest() {
       });
     };
 
-    this.agregarUsuario=function(nick){
+    this.agregarUsuario=function(email){
       var cli=this;
-      $.getJSON("/agregarUsuario/"+nick,function(data){
-          if (data.nick!=-1){
-              console.log("Usuario "+nick+" ha sido registrado")
-              msg="Usuario " + nick + " ha sido registrado";
-              $.cookie("nick", nick);
+      $.getJSON("/agregarUsuario/"+email,function(data){
+          if (data.email!=-1){
+              console.log("Usuario "+email+" ha sido registrado")
+              msg="Usuario " + email + " ha sido registrado";
+              $.cookie("email", email);
           }
           else{
-              console.log("El nick ya está ocupado");
-              msg="El nick " + nick + " ya está ocupado";
+              console.log("El email ya está ocupado");
+              msg="El email " + email + " ya está ocupado";
           }
           cw.mostrarMsg(msg);
       })
   }
 
-  this.agregarUsuario2=function(nick){
+  this.agregarUsuario2=function(email){
       $.ajax({
           type:'GET',
-          url:'/agregarUsuario/'+nick,
+          url:'/agregarUsuario/'+email,
           success:function(data){
-              if (data.nick!=-1){
-                  console.log("Usuario "+nick+" ha sido registrado")
+              if (data.email!=-1){
+                  console.log("Usuario "+email+" ha sido registrado")
               }
               else{
-                  console.log("El nick ya está ocupado");
+                  console.log("El email ya está ocupado");
               }
           },
           error:function(xhr, textStatus, errorThrown){
@@ -67,7 +67,7 @@ function ClienteRest() {
       $.getJSON("/obtenerUsuarios/",function(data){
           var usuarios = Object.keys(data); // Obtiene las claves (nombres de usuario) del objeto
           var nombresUsuarios = usuarios.map(function (usuario) {
-              return data[usuario].nick; // Obtiene el nombre de usuario para cada clave
+              return data[usuario].email; // Obtiene el nombre de usuario para cada clave
           });
           console.log(nombresUsuarios);
           cw.mostrarMsg(JSON.stringify("Los usuarios agregados son: " + nombresUsuarios))
@@ -82,31 +82,31 @@ function ClienteRest() {
       })
   }
 
-  this.UsuarioActivo=function(nick){
+  this.UsuarioActivo=function(email){
       var cli=this;
-      $.getJSON("/usuarioActivo/"+nick,function(data){
+      $.getJSON("/usuarioActivo/"+email,function(data){
           if (data.res == true){
-              console.log("Usuario "+nick+" esta activo")
-              msg="El usuario " + nick + " está activo";
+              console.log("Usuario "+email+" esta activo")
+              msg="El usuario " + email + " está activo";
           }
           else{
-              console.log("Usuario "+nick+" no esta activo");
-              msg="El usuario " + nick + " no está activo";
+              console.log("Usuario "+email+" no esta activo");
+              msg="El usuario " + email + " no está activo";
           }
           cw.mostrarMsg(msg);
       })
   }
 
-  this.eliminarUsuario=function(nick){
+  this.eliminarUsuario=function(email){
       var cli=this;
-      $.getJSON("/eliminarUsuario/"+nick,function(data){
+      $.getJSON("/eliminarUsuario/"+email,function(data){
           if (data.usuario_eliminado != -1){
-              console.log("Usuario "+nick+" ha sido eliminado")
-              msg="Usuario "+nick+" ha sido eliminado";
+              console.log("Usuario "+email+" ha sido eliminado")
+              msg="Usuario "+email+" ha sido eliminado";
           }
           else{
-              console.log("El usuario " + nick + " no se ha podido eliminar");
-              msg="El usuario " + nick + " no se ha podido eliminar";
+              console.log("El usuario " + email + " no se ha podido eliminar");
+              msg="El usuario " + email + " no se ha podido eliminar";
           }
           cw.mostrarMsg(msg);
       })
@@ -119,12 +119,12 @@ function ClienteRest() {
         url:'/registrarUsuario',
         data: JSON.stringify({"email":email, "password": password}),
         success:function(data){
-          if (data.nick !=-1){
+          if (data.email !=-1){
             cw.limpiar();
             cw.mostrarLogin();
           }else{
             cw.limpiar();
-            cw.mostrarPopUp('El nick ya está ocupado');
+            cw.mostrarPopUp('El email ya está ocupado');
             cw.mostrarRegistro();
           }
         },
@@ -142,10 +142,10 @@ function ClienteRest() {
         url: "/loginUsuario",
         data: JSON.stringify({ email: email, password: password }),
         success: function (data) {
-          if (data.nick != -1) {
-            $.cookie("nick", data.nick);
+          if (data.email != -1) {
+            $.cookie("email", data.email);
             cw.limpiar();
-            cw.mostrarMsg("Bienvenid@ al sistema, " + data.nick);
+            cw.mostrarMsg("Bienvenid@ al sistema, " + data.email);
             cw.mostrarAgregarUsuario(); 
             cw.obtenerUsuarios();
             cw.numeroUsuarios();
@@ -166,7 +166,7 @@ function ClienteRest() {
     this.cerrarSesion=function(){
       $.getJSON("/cerrarSesion",function(){
         console.log("Sesión cerrada");
-        $.removeCookie("nick");
+        $.removeCookie("email");
       });
     }
       

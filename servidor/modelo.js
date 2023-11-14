@@ -11,15 +11,15 @@ function Sistema(){
         console.log("Conectado a la base de datos");
     });
 
-    this.agregarUsuario=function(nick){
-        let res = {nick:-1}
-        console.log("Agregando usuario "+nick);
-        if (this.usuarios[nick]){
-            console.log("El usuario "+nick+" ya existe");
+    this.agregarUsuario=function(email){
+        let res = {email:-1}
+        console.log("Agregando usuario "+email);
+        if (this.usuarios[email]){
+            console.log("El usuario "+email+" ya existe");
         }else{
-            this.usuarios[nick]=new Usuario(nick);
-            res.nick=nick;
-            console.log("Usuario "+nick+" ha sido registrado");
+            this.usuarios[email]=new Usuario(email);
+            res.email=email;
+            console.log("Usuario "+email+" ha sido registrado");
         }
         return res;
     }
@@ -31,25 +31,25 @@ function Sistema(){
         return {usuarios: this.usuarios};
     }
 
-    this.obtenerTodosNick=function(){
+    this.obtenerTodosemail=function(){
         return Object.keys(this.usuarios);
     }
     
-    this.usuarioActivo=function(nick){
+    this.usuarioActivo=function(email){
         let res={activo:false};
-        res.activo=(nick in this.usuarios);
+        res.activo=(email in this.usuarios);
         return res;
     }
     
-    this.eliminarUsuario=function(nick){
+    this.eliminarUsuario=function(email){
         let res={"usuario_eliminado":-1};
-        if (this.usuarios[nick]){
-            delete(this.usuarios[nick]);
-            console.log("Se ha eliminado el usuario con nick " + nick);
-            res.usuario_eliminado = nick;
+        if (this.usuarios[email]){
+            delete(this.usuarios[email]);
+            console.log("Se ha eliminado el usuario con email " + email);
+            res.usuario_eliminado = email;
         }
         else {
-            console.log("No existe un usuario con nick " + nick);
+            console.log("No existe un usuario con email " + email);
         }
         return res;
     }
@@ -61,8 +61,8 @@ function Sistema(){
 
     this.registrarUsuario=function(obj,callback){
         let modelo=this;
-        if (!obj.nick){
-            obj.nick=obj.email;
+        if (!obj.email){
+            obj.email=obj.email;
         }
         this.cad.buscarUsuario({"email":obj.email},function(usr){
             if (!usr){
@@ -75,8 +75,11 @@ function Sistema(){
                         callback(res);
                     });
                 });
-                console.log/({obj});
-                correo.enviarEmail(obj.email,obj.key,"Confirmar cuenta");
+                //console.log/({obj});
+                //correo.enviarEmail(obj.email,obj.key,"Confirmar cuenta");
+                if (!modelo.test){
+                    correo.enviarEmail(obj.email,obj.key,"Confirmar cuenta")
+                }
             }
             else
             {
@@ -86,6 +89,7 @@ function Sistema(){
     }
 
     this.loginUsuario = function (obj, callback) {
+        let modelo = this;
         this.cad.buscarUsuario(
           { email: obj.email, confirmada: true },
           function (usr) {
@@ -101,7 +105,8 @@ function Sistema(){
                     mensaje: "Error al comparar contraseñas",
                   });
                 } else if (result) {
-                  callback(usr); // Contraseña válida
+                    callback(usr); // Contraseña válida
+                    modelo.agregarUsuario(usr.email);
                 } else {
                   callback({ email: -1, mensaje: "Contraseña incorrecta" }); // Contraseña incorrecta
                 }
@@ -147,10 +152,13 @@ function Sistema(){
 
 }
 
-function Usuario(nick){
-    this.nick=nick;
+function Usuario(email){
+    this.nick=email;
+    this.email=email;
     this.email;
     this.clave;
+    this.apellidos;
+    this.telefono;
 }
 
 module.exports.Sistema=Sistema;

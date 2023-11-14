@@ -18,8 +18,8 @@ function ControlWeb(){
     }
 
     this.comprobarSesion = function(){
-        let nick = $.cookie("nick");
-        if(nick){
+        let email = $.cookie("email");
+        if(email){
           $("#iniText").hide();
           cw.mostrarAgregarUsuario(); 
           cw.obtenerUsuarios();
@@ -36,8 +36,8 @@ function ControlWeb(){
       let cadena='<div id="mAU">';  
       cadena = cadena + '<div class="card" style="margin-top: 30px;"><div class="card-body">';
       cadena = cadena +'<div class="form-group">';
-      cadena = cadena + '<label for="nick">Agregar un nuevo usuario:</label>';
-      cadena = cadena + '<p><input type="text" class="form-control" id="nick" placeholder="Introduce un nick"></p>';
+      cadena = cadena + '<label for="email">Agregar un nuevo usuario:</label>';
+      cadena = cadena + '<p><input type="text" class="form-control" id="email" placeholder="Introduce un email"></p>';
       cadena = cadena + '<button id="btnAU" type="submit" class="btn btn-primary" style="background-color: #424881; color: #fff; border: none; padding: 10px 20px; border-radius: 5px; font-size: 18px;">Agregar Usuario</button>';
       cadena = cadena + '<style>#btnAU:hover {background-color: #333;}</style>'
       cadena = cadena + '</div>';
@@ -46,9 +46,9 @@ function ControlWeb(){
       $("#au").append(cadena); 
 
       $("#btnAU").on("click",function(){ 
-          let nick=$("#nick").val();
-          if (nick){
-              rest.agregarUsuario(nick);
+          let email=$("#email").val();
+          if (email){
+              rest.agregarUsuario(email);
           }
       })
   }
@@ -89,13 +89,13 @@ function ControlWeb(){
       cadena = cadena + '<div class="card" style="margin-top: 30px;"><div class="card-body">';
       cadena = cadena +'<div class="form-group">';
       cadena = cadena + '<label style="display: block;">¿Usuario activo?:</label>';
-      cadena = cadena + '<p><input type="text" class="form-control" id="UA" placeholder="Introduce un nick"></p>';
+      cadena = cadena + '<p><input type="text" class="form-control" id="UA" placeholder="Introduce un email"></p>';
       cadena = cadena + '<button id="btnUA" type="submit" class="btn btn-primary" style="background-color: #424881; color: #fff; border: none; padding: 10px 20px; border-radius: 5px; font-size: 18px;">Submit</button>';
       cadena = cadena + '</div>';
       $("#ua").append(cadena); 
       $("#btnUA").on("click",function(){ 
-          let nick=$("#UA").val();
-          rest.UsuarioActivo(nick);
+          let email=$("#UA").val();
+          rest.UsuarioActivo(email);
       })
   }
 
@@ -105,25 +105,25 @@ function ControlWeb(){
       cadena = cadena + '<div class="card" style="margin-top: 30px;"><div class="card-body">';
       cadena = cadena +'<div class="form-group">';
       cadena = cadena + '<label style="display: block;">Eliminar un usuario:</label>';
-      cadena = cadena + '<p><input type="text" class="form-control" id="EU" placeholder="Introduce un nick"></p>';
+      cadena = cadena + '<p><input type="text" class="form-control" id="EU" placeholder="Introduce un email"></p>';
       cadena = cadena + '<button id="btnEU" type="submit" class="btn btn-primary" style="background-color: #424881; color: #fff; border: none; padding: 10px 20px; border-radius: 5px; font-size: 18px;">Submit</button>';
       cadena = cadena + '</div>';
       
       $("#eu").append(cadena); //au es una etiqueta que viene de agregarUsuario
 
       $("#btnEU").on("click",function(){ 
-          let nick=$("#EU").val();
-          if (nick){
-              rest.eliminarUsuario(nick);
+          let email=$("#EU").val();
+          if (email){
+              rest.eliminarUsuario(email);
           }
       })
   }
 
     this.salir = function(){
-        let nick = $.cookie("nick");
-        $.removeCookie("nick");
+        let email = $.cookie("email");
+        $.removeCookie("email");
         location.reload();
-        cw.mostrarMsg("Sesión cerrada, hasta luego "+ nick);
+        cw.mostrarMsg("Sesión cerrada, hasta luego "+ email);
         rest.cerrarSesion();
     };
 
@@ -140,7 +140,7 @@ function ControlWeb(){
     };
 
     this.mostrarRegistro = function () {
-        if ($.cookie("nick")) {
+        if ($.cookie("email")) {
           cw.limpiar();
           cw.mostrarAgregarUsuario(); 
           cw.obtenerUsuarios();
@@ -184,7 +184,7 @@ function ControlWeb(){
   };
 
   this.mostrarLogin = function () {
-      if ($.cookie("nick")){
+      if ($.cookie("email")){
         cw.limpiar();
         cw.mostrarAgregarUsuario(); 
         cw.obtenerUsuarios();
