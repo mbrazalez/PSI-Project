@@ -5,16 +5,19 @@
   "main": "index.js",
   "scripts": {
     "start": "node index.js",
-    "testW": "node_modules\\.bin\\jasmine-node servidor --forceexit",
-    "test": "./node_modules/.bin/jasmine-node servidor"
+    "testW": "node_modules\\.bin\\jasmine",
+    "test": "./node_modules/.bin/jasmine"
   },
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@google-cloud/secret-manager": "^5.0.1",
     "bcrypt": "^5.1.1",
     "body-parser": "^1.20.2",
     "cookie-session": "^2.0.0",
     "express": "^4.18.2",
+    "http": "^0.0.1-security",
+    "jasmine": "^5.1.0",
     "mongodb": "^4.4.0",
     "nodemailer": "^6.9.7",
     "passport": "^0.5.3",
@@ -22,7 +25,7 @@
     "passport-google-oauth20": "^2.0.0",
     "passport-google-one-tap": "^1.0.1",
     "passport-local": "^1.0.0",
-    "jasmine-node": "^3.0.0"
+    "socket.io": "^4.7.2"
   },
   "devDependencies": {
     "nodemon": "^3.0.1"

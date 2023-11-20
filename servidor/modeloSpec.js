@@ -78,7 +78,6 @@ const modelo = require('./modelo.js');
       });
     })
 
-
     it("Inicio de sesión correcto", function (done) {
       sistema.loginUsuario(usrTest, function(res){
         expect(res.email).toNotEqual(-1);

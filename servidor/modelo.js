@@ -7,9 +7,6 @@ function Sistema(){
     this.usuarios={};
     this.cad = new datos.CAD();
 
-    this.cad.conectar(function(db){
-        console.log("Conectado a la base de datos");
-    });
 
     this.agregarUsuario=function(email){
         let res = {email:-1}
@@ -106,7 +103,6 @@ function Sistema(){
                   });
                 } else if (result) {
                     callback(usr); // Contraseña válida
-                    modelo.agregarUsuario(usr.email);
                 } else {
                   callback({ email: -1, mensaje: "Contraseña incorrecta" }); // Contraseña incorrecta
                 }
@@ -149,6 +145,15 @@ function Sistema(){
           callback(obj);
         });
     };
+
+    correo.conectar(function(res){
+        console.log("Variables secretas obtenidas");
+        console.log(res);
+    });
+
+    this.cad.conectar(function(db){
+        console.log("Conectado a la base de datos");
+    });
 
 }
 

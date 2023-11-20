@@ -7,7 +7,17 @@ const bodyParser = require('body-parser');
 const cookieSession = require('cookie-session');
 require('./servidor/passport-setup.js');
 const modelo = require("./servidor/modelo.js");
+const moduloWS = require("./servidor/servidorWS.js");
+const httpServer = require("http").Server(app);
+const { Server } = require("socket.io");
+
+let ws = new moduloWS.ServidorWS();
+let io = new Server();
+io.listen(httpServer);
+
 const PORT = process.env.PORT || 3000;
+
+
 const haIniciado=function(request,response,next){
     if (request.user){
         next();
@@ -175,7 +185,9 @@ app.get(
     }
   );
 
-app.listen(PORT, () => {
+httpServer.listen(PORT, () => {
     console.log(`App está escuchando en el puerto ${PORT}`);
     console.log('Ctrl+C para salir');
 });
+
+ws.lanzarServidor(io,sistema);

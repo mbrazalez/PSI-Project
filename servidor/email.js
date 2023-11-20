@@ -1,21 +1,41 @@
 const nodemailer = require('nodemailer');
-//const url="https://procesos-bnruumvxca-ew.a.run.app/";
-const url="http://localhost:3000/";
+const url="https://procesos-bnruumvxca-ew.a.run.app/";
+// const url="http://localhost:3000/";
+const gv = require('./gestorVariables.js');
+let transporter;
+let options;
 
-
-const transporter = nodemailer.createTransport({
-    service: 'gmail',
-    auth: {
-        user: 'pacopepejimenez1@gmail.com',
-        pass: 'hygw iusz iqdj npzg'
-    }
-});
+// const transporter = nodemailer.createTransport({
+//     service: 'gmail',
+//     auth: {
+//         user: 'pacopepejimenez1@gmail.com',
+//         pass: 'hygw iusz iqdj npzg'
+//     }
+// });
 
 //send();
 
-module.exports.enviarEmail=async function(direccion, key,men) {
+// gv.obtenerOptions(function(res){
+//         options = res;
+// });
+
+
+module.exports.conectar=function(callback){
+    gv.obtenerOptions(function(res){
+        options=res;
+        callback(res);
+    });
+}
+
+module.exports.enviarEmail=async function(direccion, key, men) {
+    
+    transporter = nodemailer.createTransport({
+        service: 'gmail',
+        auth: options
+    });
+
     const result = await transporter.sendMail({
-        from: 'pacopepejimenez1@gmail.com',
+        from: options.user,
         to: direccion,
         subject: 'Confirmar cuenta',
         text: 'Pulsa aquí para confirmar cuenta',

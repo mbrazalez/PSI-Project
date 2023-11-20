@@ -205,6 +205,4 @@ function ControlWeb(){
         });
       });
   };
-
-
 }
