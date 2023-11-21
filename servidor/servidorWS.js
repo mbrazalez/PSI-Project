@@ -6,6 +6,16 @@ function ServidorWS(){
         });
     }
 
+    this.enviarAlRemitente=function(socket,mensaje,datos){
+		socket.emit(mensaje,datos);
+	}
+
+    this.enviarATodos=function(socket,mens,datos){
+        socket.broadcast.emit(mens,datos);
+    }
+
+
+
 };
 
 module.exports.ServidorWS = ServidorWS;

@@ -132,6 +132,7 @@ function ControlWeb(){
       $("#hookRegistro").remove();
       $("#hookLogin").remove();
       $("#hookMsg").remove();
+      $("#hookModal").remove();
       $("#mAU").remove();
       $("#mEU").remove();
       $("#mOU").remove();
