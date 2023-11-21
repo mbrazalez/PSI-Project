@@ -124,7 +124,7 @@ function ClienteRest() {
             cw.mostrarLogin();
           }else{
             cw.limpiar();
-            cw.mostrarPopUp('El email ya está ocupado');
+            cw.mostrarModal('El email ya está ocupado');
             cw.mostrarRegistro();
           }
         },
@@ -152,7 +152,7 @@ function ClienteRest() {
             cw.usuarioActivo();
             cw.eliminarUsuario();
           } else {
-            cw.mostrarPopUp("No se ha podido iniciar sesión");
+            cw.mostrarModal("No se ha podido iniciar sesión");
           }
         },
         error: function (xhr, textStatus, errorThrown) {

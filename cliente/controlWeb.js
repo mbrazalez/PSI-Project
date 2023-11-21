@@ -169,17 +169,17 @@ function ControlWeb(){
       $("#msg").append(cadena);
   };
 
-  this.cleanPopUp = function(){
-    $("#hookPopUp").remove();
-    $("#popUpMsgContainer").empty();  
+  this.cleanModal = function(){
+    $("#hookModal").remove();
+    $("#modalMsgContainer").empty();  
   };
 
-  this.mostrarPopUp = function(msg){
-    $("#hookPopUp").remove();
-    $("#popUpMsgContainer").load("./cliente/popup.html", function() {
+  this.mostrarModal = function(msg){
+    $("#hookModal").remove();
+    $("#modalMsgContainer").load("./cliente/modal.html", function() {
       // The content is loaded, now you can show the modal
-      $("#hookPopUp").append(msg);
-      $("#popUpMsg").modal("show");
+      $("#hookModal").append(msg);
+      $("#modalMsg").modal("show");
     });
   };
 
