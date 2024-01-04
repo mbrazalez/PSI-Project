@@ -1,6 +1,6 @@
 <link rel="stylesheet" href="./cliente/styles.css">
 
-<div id="hookLogin" class="min-h-70vh text-gray-900 flex justify-center" id="login-div">
+<div id="hookRegister" class="min-h-70vh text-gray-900 flex justify-center" id="login-div">
     <div class="max-w-screen-xl m-0 sm:m-10 bg-white shadow sm:rounded-lg flex justify-center flex-1">
         <div class="lg:w-1/2 xl:w-5/12 p-6 sm:p-12">
             <div class="flex justify-center items-center">
@@ -11,7 +11,7 @@
             </div>           
             <div class="mt-12 flex flex-col items-center">
                 <h1 class="text-2xl xl:text-3xl font-extrabold">
-                    Sign in
+                    Sign up
                 </h1>
                 <div class="w-full flex-1 mt-8">
                     <div class="flex flex-col items-center">
@@ -55,25 +55,28 @@
                     <div class="my-12 border-b text-center">
                         <div
                             class="leading-none px-2 inline-block text-sm text-gray-600 tracking-wide font-medium bg-white transform translate-y-1/2">
-                            Or sign in with e-mail
+                            Or sign up with email
                         </div>
                     </div>
 
                     <div class="mx-auto max-w-xs">
                         <input
-                            id="email"
+                            id="nick"
                             class="w-full px-8 py-4 rounded-lg font-medium bg-gray-100 border border-gray-200 placeholder-gray-500 text-sm focus:outline-none focus:border-gray-400 focus:bg-white"
+                            type="text" placeholder="Nick" />
+                        <input
+                            id="email"
+                            class="w-full px-8 py-4 rounded-lg font-medium bg-gray-100 border border-gray-200 placeholder-gray-500 text-sm focus:outline-none focus:border-gray-400 focus:bg-white mt-5"
                             type="email" placeholder="Email" />
                         <input
                             id="pwd"
                             class="w-full px-8 py-4 rounded-lg font-medium bg-gray-100 border border-gray-200 placeholder-gray-500 text-sm focus:outline-none focus:border-gray-400 focus:bg-white mt-5"
                             type="password" placeholder="Password" />
                         <button
-                            id="btnLogin"
+                            id="btnRegister"
                             class="mt-5 tracking-wide font-semibold secondary-button text-gray-100 w-full py-4 rounded-lg hover:bg-green-800 transition-all duration-300 ease-in-out flex items-center justify-center focus:shadow-outline focus:outline-none">
-                            <svg class="w-6 h-6 -ml-2" viewBox="0 0 24 24" id="sign-in-alt-2" xmlns="http://www.w3.org/2000/svg" class="icon multi-color" fill="#000000"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round" stroke="#CCCCCC" stroke-width="0.096"></g><g id="SVGRepo_iconCarrier"><path id="tertiary-fill" d="M21,5.78V18.22a1,1,0,0,1-.76,1l-4.1,1a.92.92,0,0,1-.14-.5V4.28a.92.92,0,0,1,.14-.5l4.1,1A1,1,0,0,1,21,5.78Z" style="fill: #000000; stroke-width: 2;"></path><path id="primary-stroke" d="M20.24,19.19l-6,1.5a1,1,0,0,1-1.24-1V4.28a1,1,0,0,1,1.24-1l6,1.5a1,1,0,0,1,.76,1V18.22A1,1,0,0,1,20.24,19.19ZM10,6h3m0,12H10" style="fill: none; stroke: #000000; stroke-linecap: round; stroke-linejoin: round; stroke-width: 2;"></path><path id="secondary-stroke" d="M6,9l3,3L6,15m3-3H3" style="fill: none; stroke: #000000; stroke-linecap: round; stroke-linejoin: round; stroke-width: 2;"></path></g></svg>
-                            <span class="ml-3">
-                                Sign In
+                            <svg class="w-6 h-6" fill="#000000" viewBox="0 0 16 16" id="register-16px" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path id="Path_184" data-name="Path 184" d="M57.5,41a.5.5,0,0,0-.5.5V43H47V31h2v.5a.5.5,0,0,0,.5.5h5a.5.5,0,0,0,.5-.5V31h2v.5a.5.5,0,0,0,1,0v-1a.5.5,0,0,0-.5-.5H55v-.5A1.5,1.5,0,0,0,53.5,28h-3A1.5,1.5,0,0,0,49,29.5V30H46.5a.5.5,0,0,0-.5.5v13a.5.5,0,0,0,.5.5h11a.5.5,0,0,0,.5-.5v-2A.5.5,0,0,0,57.5,41ZM50,29.5a.5.5,0,0,1,.5-.5h3a.5.5,0,0,1,.5.5V31H50Zm11.854,4.646-2-2a.5.5,0,0,0-.708,0l-6,6A.5.5,0,0,0,53,38.5v2a.5.5,0,0,0,.5.5h2a.5.5,0,0,0,.354-.146l6-6A.5.5,0,0,0,61.854,34.146ZM54,40V38.707l5.5-5.5L60.793,34.5l-5.5,5.5Zm-2,.5a.5.5,0,0,1-.5.5h-2a.5.5,0,0,1,0-1h2A.5.5,0,0,1,52,40.5Zm0-3a.5.5,0,0,1-.5.5h-2a.5.5,0,0,1,0-1h2A.5.5,0,0,1,52,37.5ZM54.5,35h-5a.5.5,0,0,1,0-1h5a.5.5,0,0,1,0,1Z" transform="translate(-46 -28)"></path> </g></svg>                            <span class="ml-3">
+                                Register
                             </span>
                         </button>
                     </div>
@@ -82,7 +85,7 @@
         </div>
         <div class="flex-1 hidden lg:flex">
             <div class="m-0 p-0 w-full h-full bg-contain bg-center bg-no-repeat"
-                style="background-image: url('./cliente/img/login-img.jfif'); background-size: cover;">
+                style="background-image: url('./cliente/img/register-img.png'); background-size: cover;">
             </div>
         </div>        
     </div>

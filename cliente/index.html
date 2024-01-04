@@ -2,14 +2,16 @@
 <html>
     <head>
         <meta charset="utf-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
         <title>PIS-Project</title>
         <!-- jQuery library -->
         <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js" integrity="sha512-bLT0Qm9VnAYZDflyKcBaQ2gg0hSYNQrJ8RilYldYQ1FxQYoCLtUjuuRuZo+fjqhx/qtq/1itJ0C2ejDxltZVFg==" crossorigin="anonymous"></script>
         <!-- Socket.io -->
         <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.7.2/socket.io.js" integrity="sha512-zoJXRvW2gC8Z0Xo3lBbao5+AS3g6YWr5ztKqaicua11xHo+AvE1b0lT9ODgrHTmNUxeCw0Ry4BGRYZfXu70weg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-        <!-- Latest compiled and minified CSS -->
-        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css">
+       <!-- CSS -->
+       <link rel="stylesheet" href="/cliente/lib/chessboard.min.css">
+       <link rel="stylesheet" href="./cliente/styles.css">
+       <!-- Tailwind CSS -->
+       <script src="https://cdn.tailwindcss.com"></script>
         <!-- Popper JS -->
         <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
         <!-- Latest compiled JavaScript -->
@@ -24,73 +26,71 @@
         <script src="./cliente/clienteWS.js"></script>
         <!-- Google Sign-In -->
         <script src="https://accounts.google.com/gsi/client" async defer></script>
-        <style>
-             .navbar {
-                background-color: #424881; /* Color de fondo deseado */
-            }
-
-            body {
-                background-color: rgb(253, 253, 245); 
-            }
-
-           .nav-item.selected {
-                background-color:#535081; 
-            }
-
-            .nav-item.selected:hover {
-                background-color: #7882DA;
-            }
-
-            .nav-item {
-                transition: background-color 0.3s, color 0.3s; 
-            }
-            
-        </style>
+        <!-- Chess-->
+        <script src="./cliente/lib/chess.min.js"></script>
+        <!-- Chessboard -->
+        <script src="./cliente/lib/chessboard.min.js"></script>
+        <!-- Chess logic -->
+        <script src="./cliente/chesslogic.js"></script>
     </head>
     <body onload="ini();">
-        <nav class="navbar navbar-expand-sm navbar-dark">
-            <!-- Brand/logo -->
-            <a class="navbar-brand" href="https://www.esiiab.uclm.es/">
-                <img  alt="Logo" width="auto" height="30" src="data:image/png;base64,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" alt="Logo">
-            </a>
-            <!-- Links -->
-            <ul class="navbar-nav">
-                <li class="nav-item" id="logout-link">
-                    <a class="nav-link" href="#" onclick="cw.salir()">Log out</a>
-                </li>
-                <li class="nav-item" id="register-link">
-                    <a class="nav-link" href="#" onclick="cw.mostrarRegistro()">Register</a>
-                </li>
-                <li class="nav-item" id="login-link">
-                    <a class="nav-link" href="#" onclick="cw.mostrarLogin()">Login</a>
-                </li>
-            </ul>
-        </nav>
-        <div class="container-fluid">
-            <p id="iniText">This is the main page of my project for the Processes of Software Engineering subject (4th Course of Computer Science Degree in UCLM) </p>
+        <nav id="navbar">
+            <div class="flex flex-wrap justify-between p-4">
+                <a href="https://flowbite.com/" class="flex space-x-3 rtl:space-x-reverse">
+                    <svg class="h-8 w-8" viewBox="0 0 64 64" id="Layer_1" version="1.1" xml:space="preserve" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" fill="#000000"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <g id="Body_14_"> <g> <path d="M60,0H4C1.791,0,0,1.791,0,4v56c0,2.209,1.791,4,4,4h56c2.209,0,4-1.791,4-4V4 C64,1.791,62.209,0,60,0z" style="fill:#A67C52;"></path> </g> </g> <g id="Shape_32_"> <g> <rect height="56" style="fill:#FFFFFF;" width="56" x="4" y="4"></rect> </g> </g> <g id="Board"> <g> <path d="M20,4h-8v8h8V4z M36,4h-8v8h8V4z M52,4h-8v8h8V4z M4,12v8h8 v-8H4z M28,20v-8h-8v8H28z M44,20v-8h-8v8H44z M60,20v-8h-8v8H60z M20,20h-8v8h8V20z M36,28v-8h-8v8H36z M44,20v8h8v-8H44z M4,28 v8h8v-8H4z M28,28h-8v8h8V28z M36,36h8v-8h-8V36z M60,36v-8h-8v8H60z M20,36h-8v8h8V36z M28,36v8h8v-8H28z M44,44h8v-8h-8V44z M4,44v8h8v-8H4z M20,44v8h8v-8H20z M36,44v8h8v-8H36z M60,52v-8h-8v8H60z M12,60h8v-8h-8V60z M28,60h8v-8h-8V60z M44,60h8v-8h-8 V60z" style="fill-rule:evenodd;clip-rule:evenodd;fill:#666666;"></path> </g> </g> <g></g> <g></g> <g></g> <g></g> <g></g> <g></g> <g></g> <g></g> <g></g> <g></g> <g></g> <g></g> <g></g> <g></g> <g></g> </g></svg>
+                    <span class="self-center text-2xl font-semibold whitespace-nowrap dark:text-white">ProcessChess</span>
+                </a>
+                <button id="menu-toggle" data-collapse-toggle="navbar-options" type="button" class="inline-flex items-center p-2 w-10 h-10 justify-center text-sm text-gray-500 rounded-lg md:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600" aria-controls="navbar-options" aria-expanded="false">
+                    <span class="sr-only">Open main menu</span>
+                    <svg class="w-5 h-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 17 14">
+                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M1 1h15M1 7h15M1 13h15"/>
+                    </svg>
+                </button>                
+                <div class="hidden w-full md:block md:w-auto" id="navbar-options">
+                    <ul class="flex flex-col font-medium mt-4 rounded-lg bg-gray-50 md:space-x-8 md:flex-row md:mt-0 md:border-0 md:bg-transparent dark:bg-gray-800 md:dark:bg-transparent dark:border-gray-700">
+                        <li id="register-link">
+                            <a href="#" onclick="cw.showRegister()" class="block py-2 px-3 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-green-900 md:p-0 dark:text-white md:dark:hover:text-green-900 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent">Register</a>
+                        </li>
+                        <li id="login-link">
+                            <a href="#" onclick="cw.showLogin()" class="block py-2 px-3 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-green-900 md:p-0 dark:text-white md:dark:hover:text-green-900 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent">Login</a>
+                        </li>
+                        <li id="logout-link">
+                            <a href="#" onclick="cw.logout()" class="block py-2 px-3 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-green-900 md:p-0 dark:text-white md:dark:hover:text-green-900 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent">Logout</a>
+                        </li>
+                        <li id="playGame">
+                            <a href="#" onclick="cw.startGame()" class="block py-2 px-3 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-green-900 md:p-0 dark:text-white md:dark:hover:text-green-900 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent">Play a game</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </nav>       
+        <div class="container mx-auto my-8 p-4">
+            <p id="iniText" class="text-4xl font-semibold text-gray-900 dark:text-white text-justify">This is the home page of ProcessChess an online multiplayer game designed by Manuel Brazález Cañadas for playing chess online.<br> <br>
+                I hope you enjoy it and have fun playing chess with your friends!
+            </p>
+            <br>
+            <!--<p class="text-4xl font-semibold text-gray-900 dark:text-white text-justify">
+                If you are new in chess, here are some interesting resources to learn!
+            </p>-->
             <div id="msg"></div>
-            <div id="au"></div>
-            <div id = "ou"> </div>
-            <div id = "nu"> </div>
-            <div id = "ua"> </div>
-            <div id = "eu"> </div>
-            <div id="registro"></div> 
+            <div id="register"></div> 
             <div id="login"></div>
-            <div id="modalMsgContainer"></div>
+            <div id="gameBoard"></div>
+            <div id="modalMsgContainer" class="flex items-center justify-center"></div>
         </div>
-        <div
+
+        <!-- <div
             id="g_id_onload"
             data-client_id="44495439503-6fnl179s1fjn5t0f3i4rvasf63ob8qdh.apps.googleusercontent.com"
             data-login_uri="https://procesos-bnruumvxca-ew.a.run.app/oneTap/callback"
             data-skip_prompt_cookie="email"
-        ></div>
-        <!-- <div
+        ></div> -->
+        <div
             id="g_id_onload"
             data-client_id="44495439503-6fnl179s1fjn5t0f3i4rvasf63ob8qdh.apps.googleusercontent.com"
             data-login_uri="http://localhost:3000/oneTap/callback"
             data-skip_prompt_cookie="email"
-        ></div>  -->
-
+        ></div> 
 
         <script>
            function ini() {
@@ -98,30 +98,16 @@
                 rest = new ClienteRest();
                 cw = new ControlWeb();
                 ws = new ClienteWS();
-                ws.conectar();
-                cw.comprobarSesion();
-
-                $("#logout-link").click(function () {
-                    actualizarSeleccion(this);
-                    cw.salir();
-                });
-
-                $("#register-link").click(function () {
-                    actualizarSeleccion(this);
-                    cw.mostrarRegistro();
-                });
-
-                $("#login-link").click(function () {
-                    actualizarSeleccion(this);
-                    cw.mostrarLogin();
-                });
+                logic = new ChessLogic();
+                cw.checkSession();
             }
+        </script>
 
-            function actualizarSeleccion(enlaceSeleccionado) {
-                $(".nav-item").removeClass("selected"); 
-                $(enlaceSeleccionado).addClass("selected"); 
-            }
-
+        <script>
+            document.getElementById('menu-toggle').addEventListener('click', function() {
+                var navbarOptions = document.getElementById('navbar-options');
+                navbarOptions.classList.toggle('hidden');
+            });
         </script>
     </body>
 </html>

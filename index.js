@@ -16,7 +16,7 @@ let io = new Server();
 io.listen(httpServer);
 
 const PORT = process.env.PORT || 3000;
-
+games = {};
 
 const haIniciado=function(request,response,next){
     if (request.user){
@@ -96,40 +96,6 @@ app.get("/", function(request,response){
     response.send(contenido);
 });
 
-app.get("/", function(request,response){
-    var contenido=fs.readFileSync(__dirname+"/cliente/eliminarUsuario.html");
-    response.setHeader("Content-type","text/html");
-    response.send(contenido);
-});
-
-app.get("/agregarUsuario/:email", haIniciado, function(request,response){
-    let email=request.params.email;
-    let res=sistema.agregarUsuario(email);
-    response.send(res);
-});
-
-app.get("/obtenerUsuarios", haIniciado, function(request,response){
-    let res=sistema.obtenerUsuarios();
-    response.send(res);
-});
-
-app.get("/eliminarUsuario/:email", haIniciado, function(request,response){
-    let email=request.params.email;
-    let res=sistema.eliminarUsuario(email);
-    response.send(res);
-});
-
-app.get("/usuarioActivo/:email", haIniciado, function(request,response){
-    let email = request.params.email;
-    let res = sistema.usuarioActivo(email);
-    response.send(res);
-});
-
-app.get("/numeroUsuarios", haIniciado, function(request,response){
-    let res = sistema.numeroUsuarios();
-    response.send(res);
-});
-
 app.post('/enviarJwt', function (request, response) {
     let jwt = request.body.jwt;
     let user = JSON.parse(atob(jwt.split(".")[1]));
@@ -166,9 +132,6 @@ app.get("/cerrarSesion",haIniciado,function(request,response){
     let email=request.user.email;
     request.logout();
     response.redirect("/");
-    if (email){
-        sistema.eliminarUsuario(email);
-    }
 });
 
 app.post('/oneTap/callback',
@@ -181,9 +144,31 @@ app.get(
     "/google/callback",
     passport.authenticate("google", { failureRedirect: "/fallo" }),
     function (req, res) {
-      res.redirect("/good");
+        res.redirect("/good");
     }
-  );
+);
+
+app.get("/agregarUsuario/:email", haIniciado, function(request,response){
+    let email=request.params.email;
+    let res=sistema.agregarUsuario(email);
+    response.send(res);
+});
+
+app.get("/eliminarUsuario/:email", haIniciado, function(request,response){
+    let email=request.params.email;
+    let res=sistema.eliminarUsuario(email);
+    response.send(res);
+});
+
+app.get("/obtenerUsuarios", haIniciado, function(request,response){
+    let res=sistema.obtenerUsuarios();
+    response.send(res);
+});
+
+app.get('/', (req, res) => {
+    res.render('index');
+});
+
 
 httpServer.listen(PORT, () => {
     console.log(`App está escuchando en el puerto ${PORT}`);

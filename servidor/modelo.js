@@ -1,88 +1,41 @@
+const e = require("express");
 const datos = require("./cad.js");
 const correo = require("./email.js");
 const bcrypt = require("bcrypt");
+const { v4: uuidv4 } = require('uuid');
 
 function Sistema(){
-    const datos = require('./cad.js');
-    this.usuarios={};
-    this.cad = new datos.CAD();
-
-
-    this.agregarUsuario=function(email){
-        let res = {email:-1}
-        console.log("Agregando usuario "+email);
-        if (this.usuarios[email]){
-            console.log("El usuario "+email+" ya existe");
-        }else{
-            this.usuarios[email]=new Usuario(email);
-            res.email=email;
-            console.log("Usuario "+email+" ha sido registrado");
+  this.usuarios = {};
+  this.partidas = {};
+  this.cad = new datos.CAD();
+  
+  this.registrarUsuario=function(obj,callback){
+    let modelo=this;
+      if (!obj.email){
+          obj.email=obj.email;
+      }
+      this.cad.buscarUsuario({"email":obj.email},function(usr){
+        if (!usr){
+          obj.nick=obj.nick;
+          obj.key=Date.now().toString();
+          obj.confirmada=false; 
+          bcrypt.hash(obj.password, 10, function (err, hash) {
+            obj.password = hash;
+            modelo.cad.insertarUsuario(obj,function(res){
+              callback(res);
+            });
+          });
+          //console.log/({obj});
+          //correo.enviarEmail(obj.email,obj.key,"Confirmar cuenta");
+          if (!modelo.test){
+            correo.enviarEmail(obj.email,obj.key,"Confirmar cuenta")
+          }
         }
-        return res;
-    }
-
-    this.obtenerUsuarios=function(){
-        let list = Object.keys(this.usuarios);
-        if (list.length==0)
-            return {usuarios:-1};
-        return {usuarios: this.usuarios};
-    }
-
-    this.obtenerTodosemail=function(){
-        return Object.keys(this.usuarios);
-    }
-    
-    this.usuarioActivo=function(email){
-        let res={activo:false};
-        res.activo=(email in this.usuarios);
-        return res;
-    }
-    
-    this.eliminarUsuario=function(email){
-        let res={"usuario_eliminado":-1};
-        if (this.usuarios[email]){
-            delete(this.usuarios[email]);
-            console.log("Se ha eliminado el usuario con email " + email);
-            res.usuario_eliminado = email;
+        else
+        {
+          callback({"email":-1});
         }
-        else {
-            console.log("No existe un usuario con email " + email);
-        }
-        return res;
-    }
-
-    this.numeroUsuarios=function(){
-        let list = Object.keys(this.usuarios);
-        return {num: list.length};
-    }
-
-    this.registrarUsuario=function(obj,callback){
-        let modelo=this;
-        if (!obj.email){
-            obj.email=obj.email;
-        }
-        this.cad.buscarUsuario({"email":obj.email},function(usr){
-            if (!usr){
-                //el usuario no existe, luego lo puedo registrar
-                obj.key=Date.now().toString();
-                obj.confirmada=false; 
-                bcrypt.hash(obj.password, 10, function (err, hash) {
-                    obj.password = hash;
-                    modelo.cad.insertarUsuario(obj,function(res){
-                        callback(res);
-                    });
-                });
-                //console.log/({obj});
-                //correo.enviarEmail(obj.email,obj.key,"Confirmar cuenta");
-                if (!modelo.test){
-                    correo.enviarEmail(obj.email,obj.key,"Confirmar cuenta")
-                }
-            }
-            else
-            {
-                callback({"email":-1});
-            }
-        });
+      });
     }
 
     this.loginUsuario = function (obj, callback) {
@@ -155,15 +108,89 @@ function Sistema(){
         console.log("Conectado a la base de datos");
     });
 
+    this.agregarUsuario=function(email){
+      let res = {email:-1}
+      console.log("Agregando usuario "+email);
+      if (this.usuarios[email]){
+        console.log("El usuario "+email+" ya existe");
+      }else{
+        this.usuarios[email]=new Usuario(email);
+        console.log("Usuario "+email+" ha sido registrado");
+      }
+      console.log(this.usuarios);
+      return res;
+    };
+
+    this.eliminarUsuario=function(email){
+      let res={"usuario_eliminado":-1};
+      if (this.usuarios[email]){
+          delete(this.usuarios[email]);
+          console.log("Se ha eliminado el usuario con email " + email);
+          res.usuario_eliminado = email;
+      }
+      else {
+          console.log("No existe un usuario con email " + email);
+      }
+      return res;
+    }
+    this.crearPartida=function(email){
+      res={codigo:-1};
+      creator=this.usuarios[email].email;
+      if (creator){
+        codigo = this.obtenerCodigo();
+        newPartida=new Partida(codigo);
+        newPartida.jugadores.push(creator);
+        this.partidas[codigo]=newPartida;
+        res=newPartida.codigo;
+      }
+      return res;
+    }
+  
+    // Gestion de partidas
+    this.obtenerCodigo=function(){
+      code = uuidv4().toString().substr(0, 6);
+      return code;
+    }
+    this.unirAPartida=function(email,codigo){
+      let res={codigo:-1,color:undefined};
+      let partida=this.partidas[codigo];
+      if (partida){
+        if (partida.jugadores.length<partida.maxJug){
+          partida.jugadores.push(email);
+          console.log(partida.jugadores);
+          console.log("El usuario con email "+email+" se ha unido a la partida con codigo "+codigo);
+          res.codigo=partida.codigo;
+          res.color='black';
+        }
+      }
+      return res;
+    }
+  
+    this.obtenerPartidasDisponibles = function(){
+      let lista=[];
+      for (var key in this.partidas){
+        let partida=this.partidas[key];
+        let creador = partida.jugadores[0];
+        if (partida.jugadores.length<partida.maxJug){
+          lista.push({codigo:partida.codigo, email:creador.email});
+        }
+      }
+      return lista;
+    }
 }
 
 function Usuario(email){
-    this.nick=email;
-    this.email=email;
-    this.email;
-    this.clave;
-    this.apellidos;
-    this.telefono;
+  this.email=email;
+  this.nick;
+  this.partidasGanadas=0;
+  this.partidasPerdidas=0;
+}
+
+function Partida(codigo){
+  this.codigo=codigo;
+  this.jugadores=[]; 
+  this.maxJug=2;
+  this.partidaAcabada=false;
 }
 
 module.exports.Sistema=Sistema;
