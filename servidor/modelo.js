@@ -116,6 +116,7 @@ function Sistema(){
       }else{
         this.usuarios[email]=new Usuario(email);
         console.log("Usuario "+email+" ha sido registrado");
+        res.email=email;
       }
       console.log(this.usuarios);
       return res;
@@ -133,6 +134,19 @@ function Sistema(){
       }
       return res;
     }
+
+    this.obtenerUsuario=function(email){
+      let res={"usuario":-1};
+      if (this.usuarios[email]){
+          res.usuario=this.usuarios[email];
+          console.log("El usuario con email " + email + " existe");
+      }
+      else{
+          console.log("El usuario con email " + email + " no existe");
+      }
+      return res;
+    }
+
     this.crearPartida=function(email){
       res={codigo:-1};
       creator=this.usuarios[email].email;

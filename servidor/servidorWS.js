@@ -25,13 +25,12 @@ function ServidorWS(){
                 srv.enviarATodos(socket,"listaPartidas",lista);
             });
 
-            socket.on("move", function(msg){
-                console.log("enviando mensaje");
-                socket.broadcast.emit("move",msg);
+            socket.on("move", function(datos){
+                srv.enviarATodos(socket,"move",datos);
             });
 
             socket.on("startGame",function(datos){
-                socket.broadcast.emit("startGame",datos);
+                srv.enviarATodos(socket,"startGame",datos);
             });
         });
     }

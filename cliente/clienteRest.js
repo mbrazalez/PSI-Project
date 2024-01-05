@@ -7,7 +7,6 @@ function ClienteRest() {
       success:function(data){
         let msg="El email "+data.email+" está ocupado";
         if (data.email!=-1){
-          console.log("Usuario "+data.email+" ha sido registrado");
           msg="Bienvenido al sistema, "+data.email;
           $.cookie("email",data.email);
         }else{
@@ -59,7 +58,9 @@ function ClienteRest() {
           $.cookie("email", data.email);
           ws.email = data.email;
           cw.clean();
-          cw.showMsg("Bienvenid@ al sistema, " + data.email);
+          cw.checkSession();
+          console.log("Usuario " + data.email + " ha iniciado sesión");
+          cw.showMsg(data.email);
         } else {
           cw.showModal("The introduced data is not correct, please try it again.");
         }
@@ -84,17 +85,14 @@ function ClienteRest() {
   this.agregarUsuario=function(email){
     var cli=this;
     $.getJSON("/agregarUsuario/"+email, function(data){
-      console.log(data);
+      console.log(data.email + " ha sido agregado");
         if (data.email!=-1){
             console.log("Usuario "+email+" ha sido registrado")
-            msg="Usuario " + email + " ha sido registrado";
             $.cookie("email", email);
         }
         else{
             console.log("El email ya está ocupado");
-            msg="El email " + email + " ya está ocupado";
         }
-        cw.showMsg(msg);
     })
   }
 
@@ -102,26 +100,20 @@ function ClienteRest() {
     var cli=this;
     $.getJSON("/eliminarUsuario/"+email,function(data){
         if (data.usuario_eliminado != -1){
-            console.log("Usuario "+email+" ha sido eliminado")
-            msg="Usuario "+email+" ha sido eliminado";
         }
         else{
             console.log("El usuario " + email + " no se ha podido eliminar");
-            msg="El usuario " + email + " no se ha podido eliminar";
         }
-        cw.showMsg(msg);
     })
   }
 
-  this.obtenerUsuarios=function(){
+  this.usuarioExiste=function(email){
     var cli=this;
-    $.getJSON("/obtenerUsuarios/",function(data){
-        var usuarios = Object.keys(data); // Obtiene las claves (nombres de usuario) del objeto
-        var nombresUsuarios = usuarios.map(function (usuario) {
-            return data[usuario].email; // Obtiene el nombre de usuario para cada clave
-        });
-        console.log(nombresUsuarios);
-        cw.mostrarMsg(JSON.stringify("Los usuarios agregados son: " + nombresUsuarios))
+    $.getJSON("/obtenerUsuario/"+email,function(data){
+        if (data.usuario != -1){
+            return true;
+        }
+        return false;
     })
   }
 }

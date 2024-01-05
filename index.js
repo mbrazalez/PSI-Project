@@ -160,8 +160,8 @@ app.get("/eliminarUsuario/:email", haIniciado, function(request,response){
     response.send(res);
 });
 
-app.get("/obtenerUsuarios", haIniciado, function(request,response){
-    let res=sistema.obtenerUsuarios();
+app.get("/obtenerUsuario/:email", haIniciado, function(request,response){
+    let res=sistema.obtenerUsuario(request.params.email);
     response.send(res);
 });
 

@@ -1,5 +1,4 @@
 function ControlWeb(){
-
   this.init = function(){
     let cw = this;
     google.accounts.id.initialize({
@@ -19,11 +18,17 @@ function ControlWeb(){
     let email = $.cookie("email");
     if(email){
       ws.email = email;
-      console.log("Se va a agrear el usuario " + email);
-      rest.agregarUsuario(email);
       $("#iniText").hide();
+      $("#register-link").hide();
+      $("#login-link").hide();
+      $("#leftGame").hide();
+      if (!rest.usuarioExiste(email)){
+        rest.agregarUsuario(email);
+        cw.showGameMenu();
+      }
       return true;
     }
+    $("#leftGame").hide();
     return false;
   };
 
@@ -32,6 +37,7 @@ function ControlWeb(){
     $.removeCookie("email");
     location.reload();
     cw.showMsg("Sesión cerrada, hasta luego "+ email);
+    rest.eliminarUsuario(email);
     rest.cerrarSesion();
   };
 
@@ -50,38 +56,40 @@ function ControlWeb(){
   };
 
   this.showLogin = function () {
-    let isLogged = this.checkSession();
     cw.clean();
-    if (!isLogged){
-      $("#login").load("./cliente/login.html", function () {
-        $("#btnLogin").on("click", function (e) {
-          e.preventDefault();
-          let email = $("#email").val();
-          let pwd = $("#pwd").val();
-          if (email && pwd) {
-            rest.loginUsuario(email, pwd);
-          }
-        });
+    $("#login").load("./cliente/login.html", function () {
+      $("#btnLogin").on("click", function (e) {
+        e.preventDefault();
+        let email = $("#email").val();
+        let pwd = $("#pwd").val();
+        if (email && pwd) {
+          rest.loginUsuario(email, pwd);
+        }
       });
-      return isLogged;
-    }
+    });
     // Aquí el menú de partidas -->("#iniText").show();
-    return isLogged;
   };
 
-  // Esta para mostrar página principal cuando la tenga
-  this.showHome = function(){
-    cw.clean();
-    if (this.checkSession()){
-
-    }
+  this.showGameMenu = function(){
+    $("#gameMenu").load("./cliente/gameMenu.html", function(){
+      $("#btnCreateGame").on("click", function () {
+        console.log("Create Game");
+      });
+      $("#btnJoinGame").on("click", function () {
+        console.log("Join Game");
+      });
+    });
   };
 
-  this.showMsg= function(msg){
+  this.showMsg = function(msg) {
     $("#hookMsg").remove();
-    let cadena = '<div id="hookMsg" class="alert alert-success" role="alert">';
+    let cadena = '<div id="hookMsg" class="flex items-center p-6 mb-6 text-2xl text-green-800 rounded-lg bg-green-50 dark:bg-gray-800 dark:text-green-400 mx-auto" role="alert" style="width: 80vw;">';
+    cadena += '<svg class="flex-shrink-0 inline w-12 h-12 me-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">';
+    cadena += '<path d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5ZM9.5 4a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3ZM12 15H8a1 1 0 0 1 0-2h1v-3H8a1 1 0 0 1 0-2h2a1 1 0 0 1 1 1v4h1a1 1 0 0 1 0 2Z"/>';
+    cadena += '</svg>';
+    cadena += '<span class="sr-only">Info</span><div><span class="font-medium">Welcome to ProcessChess! </span>';
     cadena += msg;
-    cadena += '</div>';
+    cadena += '</div></div>';
     $("#msg").append(cadena);
   };
 
@@ -91,6 +99,16 @@ function ControlWeb(){
     $("#modalMsgContainer").load("./cliente/modal.html", function() {
       $("#hookModal").append(msg);
       $("#modalMsg").modal("show");
+    });
+  };
+
+  this.showWaitingModal = function(codigo){
+    $("#hookLogin").remove();
+    $("#hookModal").remove();
+    $("#gameMenu").hide();
+    $("#modalMsgContainer").load("./cliente/waitingModal.html", function() {
+      $("#hookModal").modal("show");
+      $("#gameCodeValue").text(codigo);
     });
   };
 
@@ -110,5 +128,18 @@ function ControlWeb(){
   this.startGame = function(){
     logic.initGame()
     cw.clean()
+  };
+
+  this.goHome = function(){
+    cw.clean();
+    if (this.checkSession()){
+      cw.showMsg(ws.email);
+    }else{
+      $("#iniText").show();
+    }
+  };
+
+  this.createGame = function(){
+    ws.createGame();
   };
 }

@@ -20,11 +20,13 @@ function ClienteWS() {
     };
 
     this.socket.on("partidaCreada",function(datos){
-        console.log(datos.codigo);
         this.code=datos.codigo;
         logic.playerColor=datos.color
         console.log("Mi color es.."+ datos.color);
+        console.log("Código de la partida: "+datos.codigo);
+        cw.showWaitingModal(datos.codigo);
         // cw mostrar esperando rival
+
     });
 
     // Functions for joining a new lobby
