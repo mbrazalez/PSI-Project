@@ -16,10 +16,12 @@ function ServidorWS(){
 
             socket.on("unirAPartida",function(datos){
                 let codigo = datos.codigo;
+                console.log(datos.email+" se une a partida "+codigo);
                 let res = sistema.unirAPartida(datos.email,codigo);
                 if (res.codigo!=-1){
                     socket.join(codigo);
                 }
+                console.log(res);
                 srv.enviarAlRemitente(socket,"unidoAPartida",res);
                 let lista = sistema.obtenerPartidasDisponibles();
                 srv.enviarATodos(socket,"listaPartidas",lista);
@@ -32,6 +34,13 @@ function ServidorWS(){
             socket.on("startGame",function(datos){
                 srv.enviarATodos(socket,"startGame",datos);
             });
+
+            socket.on("leftGame",function(datos){
+                sistema.eliminarPartida(datos.codigo);
+                srv.enviarATodos(socket,"leftGame",datos);
+            });
+
+    
         });
     }
 

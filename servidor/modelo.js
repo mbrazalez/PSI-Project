@@ -166,7 +166,7 @@ function Sistema(){
       return code;
     }
     this.unirAPartida=function(email,codigo){
-      let res={codigo:-1,color:undefined};
+      let res={codigo:-1,color:undefined, email:email};
       let partida=this.partidas[codigo];
       if (partida){
         if (partida.jugadores.length<partida.maxJug){
@@ -190,6 +190,19 @@ function Sistema(){
         }
       }
       return lista;
+    }
+
+    this.eliminarPartida=function(codigo){
+      let res={"partida_eliminada":-1};
+      if (this.partidas[codigo]){
+          delete(this.partidas[codigo]);
+          console.log("Se ha eliminado la partida con codigo " + codigo);
+          res.partida_eliminada = codigo;
+      }
+      else {
+          console.log("No existe una partida con codigo " + codigo);
+      }
+      return res;
     }
 }
 

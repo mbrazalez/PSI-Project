@@ -5,15 +5,12 @@ function ClienteRest() {
       url:'/enviarJwt',
       data: JSON.stringify({"jwt":jwt}),
       success:function(data){
-        let msg="El email "+data.email+" está ocupado";
         if (data.email!=-1){
-          msg="Bienvenido al sistema, "+data.email;
           $.cookie("email",data.email);
+          cw.showMsg("Welcome to the system!",data.email);
         }else{
           console.log("El email ya está ocupado");
         }
-        cw.clean();
-        cw.showMsg(msg);
       },
       error:function(xhr, textStatus, errorThrown){
         //console.log(JSON.parse(xhr.responseText));
@@ -23,6 +20,7 @@ function ClienteRest() {
         contentType:'application/json'
         //dataType:'json'
     });
+
   };
 
   this.registrarUsuario = function (email, password, nick) {
@@ -32,12 +30,9 @@ function ClienteRest() {
       data: JSON.stringify({"email":email, "password": password, "nick": nick}),
       success:function(data){
         if (data.email !=-1){
-          cw.clean();
           cw.showLogin();
         }else{
-          cw.clean();
-          cw.showModal('The introduced email is already in use.');
-          cw.showRegister();
+          cw.showModal('The introduced email is already in use.', 'register');
         }
       },
       error:function(xhr, textStatus, errorThrown){
@@ -57,12 +52,9 @@ function ClienteRest() {
         if (data.email != -1) {
           $.cookie("email", data.email);
           ws.email = data.email;
-          cw.clean();
           cw.checkSession();
-          console.log("Usuario " + data.email + " ha iniciado sesión");
-          cw.showMsg(data.email);
         } else {
-          cw.showModal("The introduced data is not correct, please try it again.");
+          cw.showModal("The introduced data is not correct, please try it again.", "login");
         }
       },
       error: function (xhr, textStatus, errorThrown) {
@@ -75,9 +67,6 @@ function ClienteRest() {
 
   this.cerrarSesion=function(){
     $.getJSON("/cerrarSesion",function(){
-      console.log("Sesión cerrada");
-      let email = $.cookie("email");
-      $.removeCookie("email");
       rest.eliminarUsuario(email);
     });
   }

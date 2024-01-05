@@ -59,7 +59,9 @@ function ChessLogic(){
 
     // Function for flipping the board if the player is black
     this.isBlack = function(){
+        console.log("Mi color es: " + logic.playerColor);
         if (logic.playerColor == 'black'){
+            console.log("Flipo el tablero");
             logic.gameHasStarted = true;
             logic.startGame();
             board.flip();
@@ -68,6 +70,7 @@ function ChessLogic(){
 
     // Function for starting the game when the two players are in the lobby
     this.startGame = function(){
+        console.log("Empieza la partida pego la call papi");
         logic.gameHasStarted = true;
         ws.startGame();
     };
@@ -95,7 +98,6 @@ function ChessLogic(){
     
         else if (logic.gameOver) {
             logic.status = 'Opponent disconnected, you win!'
-            logic.gameOver = true;
         }
     
         else if (!logic.gameHasStarted) {
@@ -108,9 +110,9 @@ function ChessLogic(){
     
             // check?
             if (game.in_check()) {
-                status += ', ' + moveColor + ' is in check'
+                status += '<br>' + moveColor + ' is in check'
             }
-            
         }
+        cw.injectStatus(status);
     };
 }

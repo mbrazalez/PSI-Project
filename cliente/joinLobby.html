@@ -1,0 +1,39 @@
+<link rel="stylesheet" href="./cliente/styles.css">
+<div id="hookModal" class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 py-10">
+  <div class="p-4 sm:p-7 bg-white rounded-xl shadow-lg">
+      <div class="flex justify-end">
+          <button id="closeModal" class="focus:outline-none" type="button" onclick="cw.goHome()">
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"
+                  class="h-6 w-6 text-gray-600 dark:text-gray-400">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                      d="M6 18L18 6M6 6l12 12"></path>
+              </svg>
+          </button>
+      </div>
+      <div class="text-center">
+          <h1 class="block text-2xl font-bold text-gray-800 dark:text-white">Join a game!</h1>
+          <p class="mt-2 text-sm text-gray-600 dark:text-gray-400">
+              Write the code of the lobby down below
+          </p>
+      </div>
+      <div class="mt-5">
+          <form>
+              <div class="grid gap-y-4">
+                  <div>
+                      <div class="relative">
+                          <input type="text" id="code"
+                              class="py-3 px-4 block w-full border-2 border-gray-200 rounded-md text-sm focus:border-blue-500 focus:ring-blue-500 shadow-sm">
+                      </div>
+                      <div id="errorJoin"
+                          class="hidden mt-4 p-4 mb-4 text-sm text-red-800 rounded-lg bg-red-50 dark:bg-gray-800 dark:text-red-400"
+                          role="alert">
+                          <span class="font-medium">The given code is wrong!</span> Please check it and try again.
+                      </div>
+                  </div>
+                  <button id="btnJoinGame" type="button"
+                    class="p-3 secondary-button border rounded-full w-full font-semibold hover:bg-green-800">Join the game</button>
+              </div>
+          </form>
+      </div>
+  </div>
+</div>

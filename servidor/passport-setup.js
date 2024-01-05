@@ -16,9 +16,9 @@ passport.use(new GoogleStrategy(
         clientID: "44495439503-6fnl179s1fjn5t0f3i4rvasf63ob8qdh.apps.googleusercontent.com",
         clientSecret: "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",
         // preprod
-        callbackURL: "http://localhost:3000/google/callback"
+        //callbackURL: "http://localhost:3000/google/callback"
         //prod
-        //callbackURL: "https://procesos-bnruumvxca-ew.a.run.app/google/callback"
+        callbackURL: "https://procesos-bnruumvxca-ew.a.run.app/google/callback"
     },
 
     function (accessToken, refreshToken, profile, done) {
@@ -40,13 +40,13 @@ passport.use(new GoogleOneTapStrategy(
 
 passport.use(new GitHubStrategy({
     // preprod
-    clientID: "5a334ef49a216b2b9d06",
-    clientSecret: "f4900d7c820410d215125e901dcda923ff51a254",
-    callbackURL: "http://localhost:3000/github/callback"
+    //clientID: "5a334ef49a216b2b9d06",
+    //clientSecret: "f4900d7c820410d215125e901dcda923ff51a254",
+    //callbackURL: "http://localhost:3000/github/callback"
     // prod
-    //clientID: "feb6f616a9921fb9667d",
-    //clientSecret: "6b69b0b38f6945ff6ae463066b57da21c3dafeaf",
-    //callbackURL: "https://procesos-bnruumvxca-ew.a.run.app/github/callback"
+    clientID: "feb6f616a9921fb9667d",
+    clientSecret: "6b69b0b38f6945ff6ae463066b57da21c3dafeaf",
+    callbackURL: "https://procesos-bnruumvxca-ew.a.run.app/github/callback"
 },
 
     function (accessToken, refreshToken, profile, done) {
