@@ -113,6 +113,6 @@ function ChessLogic(){
                 status += '<br>' + moveColor + ' is in check'
             }
         }
-        cw.injectStatus(status);
+        //cw.injectStatus(status);
     };
 }

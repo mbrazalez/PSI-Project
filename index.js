@@ -57,9 +57,10 @@ app.get('/github/callback',
 });
 
 app.get("/good", function (req, res) {
+    let email=undefined;
     switch (req.user.provider) {
         case "google":
-            let email = req.user.emails[0].value;
+            email = req.user.emails[0].value;
             sistema.usuarioOAuth({ email: email }, function (obj) {
             res.cookie("email", obj.email);
             res.redirect("/");
@@ -67,15 +68,15 @@ app.get("/good", function (req, res) {
             break;
         case "github":
             console.log(req.user);
-            let email2 = req.user.username;
-            sistema.usuarioOAuth({ email: email2 }, function (obj) {
+            email = req.user.username;
+            sistema.usuarioOAuth({ email: email }, function (obj) {
             res.cookie("email", obj.email);
             res.redirect("/");
             });
             break;
         case "google-one-tap":
-            let email3 = req.user.email;
-            sistema.usuarioOAuth({ email: email3 }, function (obj) {
+            email = req.user.emails[0].value;
+            sistema.usuarioOAuth({ email: email }, function (obj) {
             res.cookie("email", obj.email);
             res.redirect("/");
             });
