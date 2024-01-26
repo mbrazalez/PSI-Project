@@ -1,0 +1,58 @@
+<link rel="stylesheet" href="./cliente/styles.css">
+<div id="hookChat" class="relative flex-1 p-2 sm:p-6 justify-start flex flex-col  bg-white rounded-lg rounded-md rounded-xl">
+   <div class="flex sm:items-center justify-between py-3 border-b-2 border-gray-200">
+      <div class="flex items-center space-x-2">
+         <button onclick="cw.showChat()" type="button" class="inline-flex items-center justify-center rounded-lg border h-10 w-10 transition duration-500 ease-in-out text-gray-500 hover:bg-green-200 focus:outline-none">
+            <svg viewBox="0 0 1024 1024" class="w-6 h-6" version="1.1" xmlns="http://www.w3.org/2000/svg" fill="#000000"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"><path d="M885.8 383.8h-90.4c12.3 15.8 19.7 35.6 19.7 57.1v194c0 51.3-42 93.2-93.2 93.2H494.1c12.1 31 42.2 53.1 77.4 53.1h314.3c45.6 0 83-37.3 83-83V466.8c-0.1-45.7-37.4-83-83-83z" fill="#258a00"></path><path d="M780.7 582.4V286.3c0-74.2-60.7-134.9-134.9-134.9H198.2c-74.2 0-134.9 60.7-134.9 134.9v296.1c0 70.5 54.8 128.7 123.8 134.4 0 0-20 155.4 4.9 155.4s188.4-154.9 188.4-154.9h265.3c74.3 0 135-60.7 135-134.9z m-424.1 74.9l-17.4 16.4c-0.3 0.3-34.5 32.7-73.2 67.1-8.5 7.5-16.2 14.3-23.3 20.5 1.9-20.9 3.9-36.6 3.9-36.8l8-62.3L192 657c-38.5-3.2-68.7-36-68.7-74.6V286.3c0-19.9 7.8-38.6 22.1-52.8 14.2-14.2 33-22.1 52.8-22.1h447.6c19.9 0 38.6 7.8 52.8 22.1 14.2 14.2 22.1 33 22.1 52.8v296.1c0 19.9-7.8 38.6-22.1 52.8-14.2 14.2-33 22.1-52.8 22.1H356.6z" fill="#45484C"></path><path d="M830.3 337.9c-16.2-3.3-32.1 7.1-35.4 23.3-3.3 16.2 7.1 32.1 23.3 35.4 39 8 67.3 42.7 67.3 82.5v177c0 41.6-31.1 77.5-72.3 83.4l-32.7 4.7 7.8 32.1c2 8.1 3.9 16.8 5.8 25.3-17.6-16.4-37.3-35.2-55.2-52.7l-8.7-8.6H562.5c-21.9 0-36.6-1.4-47.2-8.6-13.7-9.3-32.4-5.8-41.7 7.9-9.3 13.7-5.8 32.4 7.9 41.7 25.7 17.5 55.3 19 81 19h143.2c10 9.7 27.3 26.3 45 42.8 16.2 15.1 29.6 27.1 39.8 35.9 20 17 29.3 23.1 41.6 23.1 9.7 0 18.7-4.4 24.8-12.1 10.1-12.9 10.2-29.1 0.5-78.7-1.4-7.2-2.9-14.2-4.3-20.6 54.4-21.1 92.4-74.3 92.4-134.6v-177c0.1-68-48.4-127.4-115.2-141.2z" fill="#45484C"></path><path d="M434.6 602.8c-35.9 0-71-17.1-98.8-48.1-24.6-27.5-39.3-61.6-39.3-91.4v-29.7l29.7-0.3c0.4 0 36.2-0.4 95.4-0.4 16.6 0 30 13.4 30 30s-13.4 30-30 30c-22.3 0-41.2 0.1-56.2 0.1 3.8 7.1 8.8 14.5 15.1 21.6 16 17.9 35.7 28.1 54.1 28.1s38.1-10.3 54.1-28.1c6.5-7.3 11.6-14.9 15.4-22.2-13.7-2.8-24.1-15-24-29.5 0.1-16.5 13.5-29.9 30-29.9h0.1c27.1 0.1 32.5 0.2 33.6 0.3l28.9 1.1v28.9c0 29.8-14.7 63.9-39.3 91.4-27.9 31-62.9 48.1-98.8 48.1z m107.1-109.5z" fill="#258a00"></path></g></svg>
+         </button>
+         <button onclick="cw.showMoves()" type="button" class="inline-flex items-center justify-center rounded-lg border h-10 w-10 transition duration-500 ease-in-out text-gray-500 hover:bg-green-200 focus:outline-none">
+            <svg viewBox="0 0 24 24" class="w-6 h-6" fill="none" xmlns="http://www.w3.org/2000/svg" stroke="#00"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path fill-rule="evenodd" clip-rule="evenodd" d="M9.5 6.5C9.5 5.11929 10.6193 4 12 4C13.3807 4 14.5 5.11929 14.5 6.5C14.5 7.88071 13.3807 9 12 9C10.6193 9 9.5 7.88071 9.5 6.5ZM12 2C9.51472 2 7.5 4.01472 7.5 6.5C7.5 7.91363 8.15183 9.17502 9.17133 10H8C7.44772 10 7 10.4477 7 11C7 11.5523 7.44772 12 8 12H9.12533C9.15208 12.3659 9.16098 12.833 9.11237 13.3535C8.99568 14.6027 8.55656 16.0909 7.31094 17.2753C6.86615 17.6982 6.19221 18.1531 5.58717 18.5199C5.29266 18.6984 5.02896 18.8475 4.83934 18.9517C4.74472 19.0037 4.66905 19.0442 4.61781 19.0713L4.56008 19.1017L4.54633 19.1088L4.54347 19.1103L4.54336 19.1103L4.54322 19.1104C4.3106 19.2299 4.13401 19.4357 4.05132 19.6838L3.27924 22H3C2.44772 22 2 22.4477 2 23C2 23.5523 2.44772 24 3 24H4H20H21C21.5523 24 22 23.5523 22 23C22 22.4477 21.5523 22 21 22H20.7659L20.1559 19.7395C20.0787 19.4533 19.8784 19.2161 19.6092 19.0919L19.609 19.0918L19.6072 19.091L19.5951 19.0853C19.5836 19.0799 19.5655 19.0714 19.5415 19.0598C19.4933 19.0366 19.4214 19.0014 19.3304 18.9553C19.1482 18.8629 18.8918 18.7279 18.5996 18.5595C18.0041 18.2164 17.3055 17.7605 16.7767 17.2682C15.5139 16.0923 15.054 14.6022 14.92 13.349C14.8647 12.8316 14.8667 12.3662 14.8878 12H16C16.5523 12 17 11.5523 17 11C17 10.4477 16.5523 10 16 10H14.8287C15.8482 9.17502 16.5 7.91363 16.5 6.5C16.5 4.01472 14.4853 2 12 2ZM11.1037 13.5395C11.158 12.9576 11.1549 12.4315 11.1296 12H12.8852C12.8649 12.4363 12.8682 12.9705 12.9313 13.5616C13.0971 15.112 13.6847 17.1218 15.4138 18.7319C15.512 18.8233 15.6134 18.9128 15.717 19L8.38107 19C8.48825 18.9094 8.59149 18.8175 8.68906 18.7247C10.3982 17.0996 10.9591 15.0879 11.1037 13.5395ZM5.72076 21L18.4246 21L18.6944 22H5.38743L5.72076 21Z" fill="#258a00"></path> </g></svg>
+         </button>
+      </div>
+   </div>
+   <div id="messages" style="max-height:70vh" class="flex flex-col space-y-2 p-3 pb-10 overflow-y-auto scrollbar-thumb-blue scrollbar-thumb-rounded scrollbar-track-blue-lighter scrollbar-w-2 scrolling-touch"></div>
+   <div id="moves" style="max-height:70vh" class="flex flex-col space-y-4 p-3 hidden overflow-y-auto scrollbar-thumb-blue scrollbar-thumb-rounded scrollbar-track-blue-lighter scrollbar-w-2 scrolling-touch"></div>
+   <div class="absolute bottom-2 left-0 items-center w-full border-gray-200 px-4 pt-4 mb-2 sm:mb-0 absolute">
+      <form id="messageForm" onsubmit="event.preventDefault(); cw.sendChatMessage()">
+           <div class="relative flex">
+               <input id="inputChat" type="text" placeholder="Write your message here!" class="w-full focus:outline-none focus:placeholder-gray-400 text-gray-600 placeholder-gray-600 pl-5 bg-gray-200 rounded-full py-3">
+               <div class="absolute right-0 items-center inset-y-0 hidden sm:flex">
+                   <button type="submit" class="inline-flex items-center justify-center rounded-lg px-3 py-2 mr-0.5 secondary-button rounded-full transition duration-500 ease-in-out text-white hover:bg-green-400 focus:outline-none">
+                       <span class="font-bold">Send</span>
+                       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="h-6 w-6 ml-2 transform rotate-90">
+                           <path d="M10.894 2.553a1 1 0 00-1.788 0l-7 14a1 1 0 001.169 1.409l5-1.429A1 1 0 009 15.571V11a1 1 0 112 0v4.571a1 1 0 00.725.962l5 1.428a1 1 0 001.17-1.408l-7-14z"></path>
+                       </svg>
+                   </button>
+               </div>
+           </div>
+      </form>
+   </div>
+</div>
+
+<style>
+   .scrollbar-w-2::-webkit-scrollbar {
+       width: 0.25rem;
+       height: 0.25rem;
+   }
+
+   .scrollbar-track-blue-lighter::-webkit-scrollbar-track {
+       --bg-opacity: 1;
+       background-color: #f7fafc;
+       background-color: rgba(247, 250, 252, var(--bg-opacity));
+   }
+
+   .scrollbar-thumb-blue::-webkit-scrollbar-thumb {
+       --bg-opacity: 1;
+       background-color: #edf2f7;
+       background-color: rgba(237, 242, 247, var(--bg-opacity));
+   }
+
+   .scrollbar-thumb-rounded::-webkit-scrollbar-thumb {
+       border-radius: 0.25rem;
+   }
+</style>
+
+<script>
+   const el = document.getElementById('messages');
+   el.scrollTop = el.scrollHeight;
+</script>

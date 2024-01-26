@@ -181,12 +181,14 @@ function Sistema(){
     }
   
     this.obtenerPartidasDisponibles = function(){
+      console.log("Obteniendo partidas disponibles");
+      console.log(this.partidas);
       let lista=[];
       for (var key in this.partidas){
         let partida=this.partidas[key];
         let creador = partida.jugadores[0];
         if (partida.jugadores.length<partida.maxJug){
-          lista.push({codigo:partida.codigo, email:creador.email});
+          lista.push({codigo:partida.codigo, email:creador});
         }
       }
       return lista;

@@ -64,7 +64,7 @@
                 </div>
             </div>
         </nav>       
-        <div class="container mx-auto my-8 p-4">
+        <div class="container mx-auto">
             <p id="iniText" class="text-4xl font-semibold text-gray-900 dark:text-white text-justify">This is the home page of ProcessChess an online multiplayer game designed by Manuel Brazález Cañadas for playing chess online.<br> <br>
                 I hope you enjoy it and have fun playing chess with your friends!
             </p>
@@ -77,26 +77,29 @@
             <div id="login"></div>
             <div id="modalMsgContainer"></div>
             <div id="gameMenu"></div>
-            <div class="grid grid-cols-2 h-3/4">
-                <div id="gameBoard" class="w-1/2 ml-20"></div>
-                <div id="gameInfo" hidden>White to move<br></div>
+            <div id="gameContainer" class="grid grid-cols-5">
+                <div id="gameBoard" class="grid col-span-3 lg:w-2/3 ml-20"></div>
+                <div id="gameChat" class="grid col-span-2 lg:mr-20"></div>
             </div>
         </div>
-         <div
+
+       
+         <!--<div
             id="g_id_onload"
             data-client_id="44495439503-6fnl179s1fjn5t0f3i4rvasf63ob8qdh.apps.googleusercontent.com"
             data-login_uri="https://procesos-bnruumvxca-ew.a.run.app/oneTap/callback"
             data-skip_prompt_cookie="email"
-        ></div> 
-        <!--<div
+        ></div> -->
+        <div
             id="g_id_onload"
             data-client_id="44495439503-6fnl179s1fjn5t0f3i4rvasf63ob8qdh.apps.googleusercontent.com"
             data-login_uri="http://localhost:3000/oneTap/callback"
             data-skip_prompt_cookie="email"
-        ></div> -->
+        ></div> 
 
         <script>
            function ini() {
+                $("#gameContainer").hide();
                 rest = new ClienteRest();
                 cw = new ControlWeb();
                 ws = new ClienteWS();

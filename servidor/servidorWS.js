@@ -11,6 +11,8 @@ function ServidorWS(){
                 }
                 srv.enviarAlRemitente(socket,"partidaCreada",{"codigo":codigo, color:'white'});
                 let lista = sistema.obtenerPartidasDisponibles();
+                console.log("Mostrando lista..");
+                console.log(lista);
                 srv.enviarATodos(socket,"listaPartidas",lista);
             });
 
@@ -38,9 +40,18 @@ function ServidorWS(){
             socket.on("leftGame",function(datos){
                 sistema.eliminarPartida(datos.codigo);
                 srv.enviarATodos(socket,"leftGame",datos);
+                let lista = sistema.obtenerPartidasDisponibles();
+                srv.enviarGlobal(io,"listaPartidas",lista);
             });
 
-    
+            socket.on("chat",function(datos){
+                srv.enviarATodos(socket,"chat",datos);
+            });
+
+            socket.on("listaPartidas",function(datos){
+                let lista = sistema.obtenerPartidasDisponibles();
+                srv.enviarGlobal(io,"listaPartidas",lista);
+            });
         });
     }
 
@@ -53,6 +64,7 @@ function ServidorWS(){
     }
     
     this.enviarGlobal=function(io,mens,datos){
+        console.log("enviarGlobal");
         io.emit(mens,datos);
     }
 };

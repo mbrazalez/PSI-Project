@@ -2,6 +2,7 @@ function ClienteWS() {
     this.socket=undefined;
     this.email=undefined;
     this.code=undefined;
+    this.gameList=[];
 
     // Functions for initialize the sockets
     this.ini=function() {
@@ -9,7 +10,7 @@ function ClienteWS() {
     }
 
     this.ini();
-
+    
     // Functions for creating a new lobby & the responses for the client
     this.crearPartida=function(){
         if (this.email==undefined) {
@@ -29,6 +30,7 @@ function ClienteWS() {
 
     // Functions for joining a new lobby
     this.unirAPartida=function(codigo){
+        console.log("Uniendo a partida "+codigo);
         this.code=codigo;
         this.socket.emit("unirAPartida",{"email":this.email,"codigo":codigo});
     }
@@ -43,12 +45,13 @@ function ClienteWS() {
         logic.initGame();
         logic.gameHasStarted=true;
         cw.page = 'ingame';
-
     });
 
     this.socket.on("listaPartidas",function(lista){
-        console.log(lista);
-        // cw mostrar lista de partidas
+        ws.gameList=lista;
+        $("#gameListContainer").hide();
+        $("#gameList").remove();
+        cw.showLobbies();
     });
 
     this.socket.on("unidoAPartida",function(res){
@@ -64,10 +67,15 @@ function ClienteWS() {
         }
     });
 
+    this.listaPartidas=function(){
+        this.socket.emit("listaPartidas");
+    }
+
     // Functions for the movements during the game 
     this.socket.on("move", function (msg){
         if (msg.codigo!=ws.code) return;
         logic.updateBoard(msg.move)
+        cw.showMove(msg.move);
     });
 
     this.newMove = function(move){
@@ -78,18 +86,29 @@ function ClienteWS() {
     // Functions for end the game, left the lobby etc
     this.leftGame=function(){
         $("#gameBoard").hide();
-        $("#gameInfo").hide();
-        cw.goHome();
+        $("#gameChat").hide();
+        $("#gameContainer").hide();
+        cw.sendMessage("El jugador "+ws.email+" ha abandonado la partida");
         this.socket.emit("leftGame",{"email":ws.email,"codigo":ws.code});
+        cw.goHome();
     }
 
     this.socket.on("leftGame",function(data){
         if (data.codigo==ws.code && data.email != ws.email){
-            cw.injectStatus("El jugador "+data.email+" ha abandonado la partida");
             logic.gameOver = true;
         }
+        cw.showLobbies();
     });
 
+    //Functions for the chat
+    this.sendChatMessage=function(msg){
+        this.socket.emit("chat",{"codigo":ws.code,"msg":msg});
+    }
 
+    this.socket.on("chat",function(data){
+        if (data.codigo==ws.code){
+            cw.receiveChatMessage(data.msg);
+        }
+    });
 }
 
