@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "start": "node index.js",
-    "testW": "node_modules\\.bin\\jasmine",
+    "testJasmine": "node_modules\\.bin\\jasmine servidor\\modeloSpec.js",
     "test": "./node_modules/.bin/jasmine"
   },
   "author": "",

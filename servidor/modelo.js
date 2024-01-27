@@ -147,6 +147,12 @@ function Sistema(){
       return res;
     }
 
+    this.numeroUsuarios=function(){
+      let res={"num":0};
+      res.num=Object.keys(this.usuarios).length;
+      return res;
+    }
+
     this.crearPartida=function(email){
       res={codigo:-1};
       creator=this.usuarios[email].email;
