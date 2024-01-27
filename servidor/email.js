@@ -1,6 +1,6 @@
 const nodemailer = require('nodemailer');
-//const url="https://procesos-bnruumvxca-ew.a.run.app/";
-const url="http://localhost:3000/";
+const url="https://procesos-bnruumvxca-ew.a.run.app/";
+//const url="http://localhost:3000/";
 const gv = require('./gestorVariables.js');
 let transporter;
 let options;
