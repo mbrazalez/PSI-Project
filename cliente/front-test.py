@@ -118,7 +118,7 @@ class TestProcessChess(unittest.TestCase):
         create_game_button.click()
         WebDriverWait(self.driver, 10).until(EC.visibility_of_element_located((By.ID, 'gameContainer')))
         self.assertTrue(self.driver.find_element(By.ID, "gameContainer").is_displayed())
-        self.assert_(self.driver.find_element(By.XPATH, '//*[contains(text(), "You are playing against the computer, you will receive just messages about the game status")]').is_displayed())
+        self.assertTrue(self.driver.find_element(By.XPATH, '//*[contains(text(), "You are playing against the computer, you will receive just messages about the game status")]').is_displayed())
         left_game_button = self.driver.find_element(By.XPATH,'/html/body/nav/div/div/ul/li[3]/a')
         left_game_button.click()
         WebDriverWait(self.driver, 10).until(EC.visibility_of_element_located((By.ID, 'gameMenu')))
@@ -145,7 +145,7 @@ class TestProcessChess(unittest.TestCase):
         WebDriverWait(self.driver, 10).until(EC.element_to_be_clickable((By.ID, 'btnLogin'))).click()
         # Wait for the welcome text to be visible
         if loginSuccess:
-            WebDriverWait(self.driver, 10).until(EC.visibility_of_element_located((By.XPATH, '//*[contains(text(), "Welcome to ProcessChess!")]')))
+            WebDriverWait(self.driver, 10).until(EC.visibility_of_element_located((By.XPATH, '//*[contains(text(), "Enjoy playing chess and good luck!")]')))
         if not loginSuccess:
             WebDriverWait(self.driver, 10).until(EC.visibility_of_element_located((By.XPATH, '//*[contains(text(), "The introduced data is not correct, please try it again.")]')))
 
